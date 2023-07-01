@@ -7,10 +7,6 @@ namespace Domain.Entities;
 /// </summary>
 public class Coin
 {
-    // public Coin()
-    // {
-    // }
-    
     /// <summary>
     /// Конструктор.
     /// </summary>
@@ -33,7 +29,7 @@ public class Coin
     public int Count { get; set; }
     
     /// <summary>
-    /// Список покупок.
+    /// Список частей покупок.
     /// </summary>
-    public ICollection<Purchase> Purchases { get; set; } = new HashSet<Purchase>();
+    public ICollection<PurchasePart> PurchaseParts { get; set; } = new HashSet<PurchasePart>();
 }

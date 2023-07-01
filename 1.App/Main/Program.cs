@@ -1,6 +1,9 @@
 using App.AppInitializer;
 using Domain.DbContexts;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+
+// TODO: Все прокомментировать
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +21,8 @@ var connectionString = string.Format(
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseSqlite(connectionString)
 );
+
+builder.Services.AddTransient<MainModel>();
 
 var app = builder.Build();
 

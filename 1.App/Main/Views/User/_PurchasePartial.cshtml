@@ -1,5 +1,5 @@
 ﻿@using Infrastructure.BaseExtensions.ValueTypes
-@model IList<Domain.Entities.Purchase>
+@model IList<Domain.Entities.PurchasePart>
 
 @for (var i = 0; i < Model.Count; i++)
 {
@@ -7,7 +7,9 @@
     <div class="pe-5 d-flex w-20">
         <input type="button" asp-for="@intId" class="requestDataKey col-form-label btn-primary px-5"
                onclick="" asp-page-handler=""/>
-        <input type="text" asp-for="@Model[i].CoinCount" class="requestDataValue form-control w--40 ms-2" readonly/>
-        <span asp-validation-for="@Model[i].CoinCount" class="text-danger"></span>
+        <input type="text" asp-for="@Model[i].CoinCount" 
+               class="requestDataValue form-control text-center w--50 ms-2" />
+        <span asp-validation-for="@Model[i].CoinCount" 
+              class="text-danger"></span>
     </div>
 }

@@ -1,4 +1,4 @@
-namespace App.Main.Models;
+namespace Domain.Models;
 
 public class ErrorModel
 {

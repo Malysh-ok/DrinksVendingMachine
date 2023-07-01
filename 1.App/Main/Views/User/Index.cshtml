@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Razor.TagHelpers
-@model Domain.Entities.MainModel
+@model Domain.Models.MainModel
 
 @{
     ViewData["Title"] = "Покупатель";
@@ -26,7 +26,7 @@
             
             <div class="col-form-label-lg me-3 mt-5 w-auto text-start">Введите монеты:</div>
             <div id="purchasePartial" class="d-flex">
-                @Html.Partial("_PurchasePartial", Model.Purchases)
+                @Html.Partial("_PurchasePartial", Model.EmptyPurchase)
             </div>
             <div class="mt-5">
                 @* <input type="submit" value="Save" class="btn btn-primary"/> *@

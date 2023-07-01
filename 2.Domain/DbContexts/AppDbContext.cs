@@ -58,7 +58,7 @@ public sealed partial class AppDbContext : DbContext
         CreateModel_Drinks(modelBuilder);
         
         // Создание модели покупок. 
-        CreateModel_Purchases(modelBuilder);
+        CreateModel_PurchaseParts(modelBuilder);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

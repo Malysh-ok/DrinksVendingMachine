@@ -21,15 +21,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\2.Domain\DbContexts\DbContexts.csproj" />
       <ProjectReference Include="..\..\2.Domain\Entities\Entities.csproj" />
+      <ProjectReference Include="..\..\2.Domain\Models\Models.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\BaseExtensions\BaseExtensions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\Phrases\Phrases.csproj" />
       <ProjectReference Include="..\AppInitializer\AppInitializer.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.8" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

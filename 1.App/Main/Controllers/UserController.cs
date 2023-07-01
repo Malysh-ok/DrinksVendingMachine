@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
-using App.Main.Models;
-using Domain.DbContexts;
 using Domain.Entities;
-using Infrastructure.BaseExtensions.Collections;
+using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Main.Controllers;
@@ -11,59 +9,36 @@ public class UserController : Controller
 {
     private readonly ILogger<UserController> _logger;
 
-    private readonly AppDbContext _dbContext;
+    private readonly MainModel _mainModel;
 
-    public UserController(ILogger<UserController> logger, AppDbContext dbContext)
+    public UserController(ILogger<UserController> logger, MainModel mainModel)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        _mainModel = mainModel;
     }
 
     public IActionResult Index()
     {
-        return View(new MainModel(
-            _dbContext.Drinks.ToList(),
-            Purchase.GetEmptyPurchases()
-        ));
+        return View(_mainModel);
     }
 
-    public IActionResult Edit2([FromBody] IEnumerable<Purchase> purchases )   // string[] lines
+    public IActionResult Edit2([FromBody] DataFromView dataFromView)   // string[] lines
     {
         
-        return PartialView("_PurchasePartial", _dbContext.Purchases.ToList());
+        
+        return PartialView("_PurchasePartial", _mainModel.EmptyPurchase);
     }
 
     [HttpPost]
-    public IActionResult Edit([FromBody] IList<Purchase> purchases)
+    public IActionResult Edit([FromBody] DataFromView dataFromView)
     {
         if (ModelState.IsValid)
         {
-            try
-            {
-                // Заполняем номер и дату
-                var number = _dbContext.Purchases.Any()
-                    ? _dbContext.Purchases
-                        .OrderBy(p => p.Number)
-                        .LastOrDefault()!.Number + 1
-                    : 1;
-                var dt = DateTime.Now;
-                purchases.ForEach(p =>
-                {
-                    p.Number = number;
-                    p.TimeStump = dt;
-                });
-
-                // Обновляем данные в БД
-                _dbContext.UpdateRange(purchases);
-                _dbContext.SaveChanges();
-            }
-            catch
-            {
-                return BadRequest("Ошибка обновления базы данных.");        
-            }
+            var result = _mainModel.UpdateData(dataFromView);
+            if (!result)  
+                BadRequest(result.Excptn.Message);        
         }
-
-        return PartialView("_PurchasePartial", Purchase.GetEmptyPurchases());
+        return PartialView("_PurchasePartial", _mainModel.EmptyPurchase);
     }
 
 

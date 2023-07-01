@@ -5,10 +5,6 @@
 /// </summary>
 public class Drink
 {
-    // public Drink()
-    // {
-    // }
-    
     /// <summary>
     /// Конструктор.
     /// </summary>
@@ -43,7 +39,7 @@ public class Drink
     public int Price { get; set; }
     
     /// <summary>
-    /// Список покупок.
+    /// Список частей покупок.
     /// </summary>
-    public ICollection<Purchase> Purchases { get; set; } = new HashSet<Purchase>();
+    public ICollection<PurchasePart> PurchaseParts { get; set; } = new HashSet<PurchasePart>();
 }

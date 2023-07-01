@@ -48,22 +48,6 @@ public static class DatabaseFiller
             return Result<bool>.Fail(ex);
         }
         
-        /*// Заполняем покупку
-        try
-        {
-            dbContext.Purchases.AddRange(
-                new Purchase(CoinEnm.One),
-                new Purchase(CoinEnm.Two),
-                new Purchase(CoinEnm.Five),
-                new Purchase(CoinEnm.Ten)
-            );
-            dbContext.SaveChanges();
-        }
-        catch (Exception ex)
-        {
-            return Result<bool>.Fail(ex);
-        }        */
-        
         return Result<bool>.Done(true);
     }
 }

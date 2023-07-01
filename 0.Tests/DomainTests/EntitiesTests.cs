@@ -9,6 +9,6 @@ public class EntitiesTests
     [TestMethod]
     public void PurchaseTest()
     {
-        var purchases = Purchase.GetEmptyPurchases();
+        // var purchases = PurchasePart.GetEmptyPurchases();
     }
 }

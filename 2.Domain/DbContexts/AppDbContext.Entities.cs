@@ -18,9 +18,9 @@ public sealed partial class AppDbContext
     public DbSet<Drink> Drinks { get; set; }
 
     /// <summary>
-    /// Покупки.
+    /// Части покупок.
     /// </summary>
-    public DbSet<Purchase> Purchases { get; set; }
+    public DbSet<PurchasePart> PurchaseParts { get; set; }
 
     
     /// <summary>
@@ -70,14 +70,14 @@ public sealed partial class AppDbContext
     }
     
     /// <summary>
-    /// Создание модели покупок.
+    /// Создание модели частей покупок.
     /// </summary>
-    private static void CreateModel_Purchases(ModelBuilder modelBuilder)
+    private static void CreateModel_PurchaseParts(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Purchase>(entity =>
+        modelBuilder.Entity<PurchasePart>(entity =>
         {
-            entity.ToTable($"Purchases",
-                t => t.HasComment("Покупки"));
+            entity.ToTable($"PurchaseParts",
+                t => t.HasComment("Части покупок"));
 
             entity.Property(p => p.Id).ValueGeneratedOnAdd();
 
@@ -89,22 +89,22 @@ public sealed partial class AppDbContext
                 
             entity.Property(p => p.CoinCount).IsRequired();
             
-            entity.Property(p => p.Number).IsRequired();
+            entity.Property(p => p.PurchaseNumber).IsRequired();
             
             entity.Property(p => p.TimeStump).IsRequired(false);
 
             entity.HasKey(p => p.Id)
-                .HasName("PK_Purchases");
+                .HasName("PK_PurchasePart");
             
             // Вторичный ключ - Монеты
             entity.HasOne(p => p.Coin)
-                .WithMany(c => c.Purchases)
+                .WithMany(c => c.PurchaseParts)
                 .HasForeignKey(p => p.CoinId)
                 .HasConstraintName("FK_Purchases_CoinId");
             
             // Вторичный ключ - Напитки
             entity.HasOne(p => p.Drink)
-                .WithMany(d => d.Purchases)
+                .WithMany(d => d.PurchaseParts)
                 .HasForeignKey(p => p.DrinkId)
                 .HasConstraintName("FK_Purchases_DrinkId");
         });

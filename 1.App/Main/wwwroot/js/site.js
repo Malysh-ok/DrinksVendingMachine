@@ -7,22 +7,30 @@ $(document).ready(function () {
     $("#senderBtn").click(function () {
         
         // Получаем все значения всех монет
-        let requestData = [];
+        let purchaseParts = [];
         $("#purchasePartial DIV").each(function () {
             let item = {};
             item.CoinId = +$(this).find(            // + вначале - преобразуем в число
                 ".requestDataKey").val();
             item.CoinCount = +$(this).find(         // + вначале - преобразуем в число
                 ".requestDataValue").val();
-            requestData.push(item);
+            purchaseParts.push(item);
         });
+        
+        // Получаем Id напитка
+        let drinkId = $("#Drinks").val();
+        
+        // Объект, для отправки контроллеру
+        let dataFromView = {}
+        dataFromView.DrinkId = drinkId;
+        dataFromView.PurchaseParts = purchaseParts;
 
         // Запрос контроллеру
         $.ajax({
             url: 'User/Edit',
             type: 'POST',
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(requestData),
+            data: JSON.stringify(dataFromView),
 
             success: function (partialView) {
                 $("#Drinks").prop('selectedIndex', 0);  // сбрасываем дропбокс

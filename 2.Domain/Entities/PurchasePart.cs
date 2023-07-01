@@ -3,14 +3,14 @@
 namespace Domain.Entities;
 
 /// <summary>
-/// Покупка.
+/// Часть покупки, выраженная количеством одного номинала монеты.
 /// </summary>
-public class Purchase
+public class PurchasePart
 {
     /// <summary>
     /// Конструктор для MVC.
     /// </summary>
-    public Purchase()
+    public PurchasePart()
     {
     }
     
@@ -20,15 +20,15 @@ public class Purchase
     /// <param name="coinId">Монета.</param>
     /// <param name="coinCount">Количество монет</param>
     /// <param name="drinkId">Напиток.</param>
-    /// <param name="number">Номер покупки.</param>
+    /// <param name="purchaseNumber">Номер покупки.</param>
     /// <param name="timeStump">Дата/время покупки.</param>
-    public Purchase(CoinEnm coinId, int coinCount = 0, 
-        int? drinkId = null, int number = 0, DateTime? timeStump = null)
+    public PurchasePart(CoinEnm coinId, int coinCount = 0, 
+        int? drinkId = null, int purchaseNumber = 0, DateTime? timeStump = null)
     {
         CoinId = coinId;
         CoinCount = coinCount;
         DrinkId = drinkId;
-        Number = number;
+        PurchaseNumber = purchaseNumber;
         TimeStump = timeStump;
     }
     
@@ -61,22 +61,10 @@ public class Purchase
     /// <summary>
     /// Номер покупки.
     /// </summary>
-    public int Number { get; set; }
+    public int PurchaseNumber { get; set; }
         
     /// <summary>
     /// Дата/время покупки.
     /// </summary>
     public DateTime? TimeStump { get; set; }
-
-    /// <summary>
-    /// Получаем список всех возможных значений <see cref="Purchase"/>
-    /// с пустыми данными.
-    /// </summary>
-    public static List<Purchase> GetEmptyPurchases()
-    {
-        return Enum.GetValues(typeof(CoinEnm))
-            .Cast<CoinEnm>()
-            .Select(i => new Purchase(i))
-            .ToList();
-    }
 }
