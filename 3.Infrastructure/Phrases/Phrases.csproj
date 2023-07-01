@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>Infrastructure.$(MSBuildProjectName)</RootNamespace>
+        <LangVersion>11</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="CommonPhrases.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <CustomToolNamespace>$(RootNamespace)</CustomToolNamespace>
+        <LastGenOutput>CommonPhrases.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="DbPhrases.resx">
+        <Generator>PublicResXFileCodeGenerator</Generator>
+        <CustomToolNamespace>$(RootNamespace)</CustomToolNamespace>
+        <LastGenOutput>DbPhrases.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="CommonPhrases.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CommonPhrases.resx</DependentUpon>
+      </Compile>
+      <Compile Update="DbPhrases.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>DbPhrases.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

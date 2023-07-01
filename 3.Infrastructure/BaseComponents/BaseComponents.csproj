@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <EnablePreviewFeatures>true</EnablePreviewFeatures>
+        <LangVersion>11</LangVersion>
+        <RootNamespace>Infrastructure.$(MSBuildProjectName)</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\BaseExtensions\BaseExtensions.csproj" />
+    </ItemGroup>
+
+</Project>

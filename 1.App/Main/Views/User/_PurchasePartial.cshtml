@@ -1,0 +1,12 @@
+﻿@using Infrastructure.BaseExtensions.ValueTypes
+@model IList<Domain.Entities.Purchase>
+
+@for (var i = 0; i < Model.Count; i++)
+{
+    var intId = Model[i].CoinId.ToInt();
+    <div>
+        <input type="hidden" asp-for="@intId" class="requestDataKey" />
+        <input asp-for="@Model[i].CoinCount" class="requestDataValue" />
+        <span asp-validation-for="@Model[i].CoinCount" class="text-danger"></span>
+    </div>
+}

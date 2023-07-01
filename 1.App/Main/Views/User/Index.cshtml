@@ -1,0 +1,51 @@
+﻿@using Infrastructure.BaseExtensions.ValueTypes
+@using Microsoft.AspNetCore.Razor.TagHelpers
+@model Domain.Entities.Agregate
+
+@{
+    ViewData["Title"] = "Покупатель";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Покупка напитков</h1>
+    
+    <table class="table">
+        <tbody>
+        <tr>
+            @foreach (var item in Model.Purchases)
+            {
+                <td>
+                    <button class="col-md-10 btn-primary" onclick="@item.CoinCount++">
+                        @item.CoinId.ToInt()
+                    </button>
+
+                    @Html.EditorFor(a => item.CoinCount,
+                        new {htmlAttributes = new {
+                            @class = "col-md-1 form-control", 
+                            id = "Purchases_"+item.CoinId
+                        }})
+                </td>
+            
+            }
+        </tr>
+        </tbody>
+    </table>
+    
+    <div class="col-md-12">
+        <label class="control-label">Purchases</label>
+        <form asp-action="Edit" id="feedBack">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div id="purchasePartial" class="form-group d-flex flex-row justify-content-between" >
+                @Html.Partial("_PurchasePartial", Model.Purchases)
+            </div>
+            <div class="form-group">
+                @* <input type="submit" value="Save" class="btn btn-primary"/> *@
+                <input id="senderBtn" type="button" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+</script>
