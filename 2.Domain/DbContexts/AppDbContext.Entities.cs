@@ -79,7 +79,9 @@ public sealed partial class AppDbContext
             entity.ToTable($"Purchases",
                 t => t.HasComment("Покупки"));
 
-            entity.Property(p => p.CoinId).ValueGeneratedNever()
+            entity.Property(p => p.Id).ValueGeneratedOnAdd();
+
+            entity.Property(p => p.CoinId).IsRequired()
                 .HasConversion(
                     enm => enm.ToInt(),
                     i => i.ToEnumWithException<CoinEnm>()
@@ -87,9 +89,11 @@ public sealed partial class AppDbContext
                 
             entity.Property(p => p.CoinCount).IsRequired();
             
+            entity.Property(p => p.Number).IsRequired();
+            
             entity.Property(p => p.TimeStump).IsRequired(false);
 
-            entity.HasKey(p => p.CoinId)
+            entity.HasKey(p => p.Id)
                 .HasName("PK_Purchases");
             
             // Вторичный ключ - Монеты

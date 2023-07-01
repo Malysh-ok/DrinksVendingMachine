@@ -48,7 +48,7 @@ public static class DatabaseFiller
             return Result<bool>.Fail(ex);
         }
         
-        // Заполняем покупку
+        /*// Заполняем покупку
         try
         {
             dbContext.Purchases.AddRange(
@@ -62,7 +62,8 @@ public static class DatabaseFiller
         catch (Exception ex)
         {
             return Result<bool>.Fail(ex);
-        }        
+        }        */
+        
         return Result<bool>.Done(true);
     }
 }

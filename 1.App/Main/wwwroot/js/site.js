@@ -5,6 +5,8 @@
 
 $(document).ready(function () {
     $("#senderBtn").click(function () {
+        
+        // Получаем все значения всех монет
         let requestData = [];
         $("#purchasePartial DIV").each(function () {
             let item = {};
@@ -15,6 +17,7 @@ $(document).ready(function () {
             requestData.push(item);
         });
 
+        // Запрос контроллеру
         $.ajax({
             url: 'User/Edit',
             type: 'POST',
@@ -22,8 +25,8 @@ $(document).ready(function () {
             data: JSON.stringify(requestData),
 
             success: function (partialView) {
-                $('#purchasePartial').html(partialView);
-                // $('#purchasePartial').show();
+                $("#Drinks").prop('selectedIndex', 0);  // сбрасываем дропбокс
+                $('#purchasePartial').html(partialView);            // заполняем монеты
             },
             
             error: function (msg) {

@@ -7,48 +7,66 @@ namespace Domain.Entities;
 /// </summary>
 public class Purchase
 {
+    /// <summary>
+    /// Конструктор для MVC.
+    /// </summary>
     public Purchase()
     {
     }
     
-    // TODO: Конструктор
-    public Purchase(CoinEnm coinId, int coinCount = 0, DateTime? timeStump = null, int? drinkId = null)
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    /// <param name="coinId">Монета.</param>
+    /// <param name="coinCount">Количество монет</param>
+    /// <param name="drinkId">Напиток.</param>
+    /// <param name="number">Номер покупки.</param>
+    /// <param name="timeStump">Дата/время покупки.</param>
+    public Purchase(CoinEnm coinId, int coinCount = 0, 
+        int? drinkId = null, int number = 0, DateTime? timeStump = null)
     {
         CoinId = coinId;
         CoinCount = coinCount;
         DrinkId = drinkId;
+        Number = number;
         TimeStump = timeStump;
     }
-
+    
     /// <summary>
-    /// Монета (идентификатор).
+    /// Идентификатор.
     /// </summary>
-    public CoinEnm CoinId { get; set; }
+    public int Id { get; set; }
 
     /// <summary>
     /// Монета.
     /// </summary>
     public Coin? Coin { get; set; }
     
+    /// <inheritdoc cref="Coin"/>
+    public CoinEnm CoinId { get; set; }
+
     /// <summary>
     /// Количество монет.
     /// </summary>
     public int CoinCount { get; set; }
     
     /// <summary>
-    /// Дата/время опускания монеты.
-    /// </summary>
-    public DateTime? TimeStump { get; set; }
-
-    /// <summary>
-    /// Напиток (идентификатор).
-    /// </summary>
-    public int? DrinkId { get; set; }
-    
-    /// <summary>
     /// Напиток.
     /// </summary>
     public Drink? Drink { get; set; }
+
+    /// <inheritdoc cref="Drink"/>
+    public int? DrinkId { get; set; }
+
+    /// <summary>
+    /// Номер покупки.
+    /// </summary>
+    public int Number { get; set; }
+        
+    /// <summary>
+    /// Дата/время покупки.
+    /// </summary>
+    public DateTime? TimeStump { get; set; }
 
     /// <summary>
     /// Получаем список всех возможных значений <see cref="Purchase"/>

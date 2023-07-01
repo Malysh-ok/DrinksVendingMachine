@@ -2,9 +2,8 @@
 using App.Main.Models;
 using Domain.DbContexts;
 using Domain.Entities;
+using Infrastructure.BaseExtensions.Collections;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Construction;
-using Microsoft.EntityFrameworkCore;
 
 namespace App.Main.Controllers;
 
@@ -22,13 +21,10 @@ public class UserController : Controller
 
     public IActionResult Index()
     {
-        // return View();
-        return View(new Agregate(
-            _dbContext.Coins.ToList(), 
+        return View(new MainModel(
             _dbContext.Drinks.ToList(),
-            // _dbContext.Purchases.ToList()
             Purchase.GetEmptyPurchases()
-            ));
+        ));
     }
 
     public IActionResult Edit2([FromBody] IEnumerable<Purchase> purchases )   // string[] lines
@@ -38,36 +34,35 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public IActionResult Edit([FromBody] IEnumerable<Purchase> purchases)
+    public IActionResult Edit([FromBody] IList<Purchase> purchases)
     {
-        Console.WriteLine("+++ Request!!!");
-        Console.WriteLine(Request);
-        
-        Agregate? aggregate = null;
-        try
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                // Заполняем номер и дату
+                var number = _dbContext.Purchases.Any()
+                    ? _dbContext.Purchases
+                        .OrderBy(p => p.Number)
+                        .LastOrDefault()!.Number + 1
+                    : 1;
+                var dt = DateTime.Now;
+                purchases.ForEach(p =>
                 {
-                    _dbContext.UpdateRange(purchases);
-                    _dbContext.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    throw;
-                }
+                    p.Number = number;
+                    p.TimeStump = dt;
+                });
+
+                // Обновляем данные в БД
+                _dbContext.UpdateRange(purchases);
+                _dbContext.SaveChanges();
+            }
+            catch
+            {
+                return BadRequest("Ошибка обновления базы данных.");        
             }
         }
-        finally
-        {
-            aggregate = new Agregate(
-                _dbContext.Coins.ToList(), 
-                _dbContext.Drinks.ToList(),
-                Purchase.GetEmptyPurchases()
-            );
-        }
-        // return View("Index", aggregate);
+
         return PartialView("_PurchasePartial", Purchase.GetEmptyPurchases());
     }
 
@@ -80,6 +75,7 @@ public class UserController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        // TODO: Разобраться с ошибками и перенести Модель в слой Domain
+        return View(new ErrorModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
