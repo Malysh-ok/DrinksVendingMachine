@@ -4,10 +4,13 @@
 @for (var i = 0; i < Model.Count; i++)
 {
     var intId = Model[i].CoinId.ToInt();
-    <div class="pe-5 d-flex w-20">
-        <input type="button" asp-for="@intId" class="requestDataKey col-form-label btn-primary px-5"
-               onclick="" asp-page-handler=""/>
-        <input type="text" asp-for="@Model[i].CoinCount" 
+    var coinId = "CoinId" + @intId;
+    var coinCount = "CoinCount" + @intId;
+    <div class="pe-5 d-flex w-25">
+        <input type="button" asp-for="@intId" id=@coinId
+               class="requestDataKey col-form-label btn-primary w-50"
+               onclick="let el = $('#@coinCount'); el.val(Number(el.val()) + 1)" />
+        <input type="text" asp-for="@Model[i].CoinCount" id=@coinCount
                class="requestDataValue form-control text-center w--50 ms-2" />
         <span asp-validation-for="@Model[i].CoinCount" 
               class="text-danger"></span>

@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 
 $(document).ready(function () {
-    $("#senderBtn").click(function () {
+    $("#buyBtn").click(function () {
         
         // Получаем все значения всех монет
         let purchaseParts = [];
@@ -39,6 +39,25 @@ $(document).ready(function () {
             
             error: function (msg) {
                 console.log("!!!!! ERROR !!!!!\n", msg);
+                let drinks = $("#Drinks");
+                let drinksValidation = $("#DrinksValidation");
+                let classText = msg.responseJSON;                   // данные из ответа
+                if (classText.turnOnClass != null)
+                {
+                    // Устанавливаем класс и удаляем через несколько секунд
+                    drinks.addClass(classText.turnOnClass);
+                    setTimeout (function() {
+                        drinks.removeClass(classText.turnOnClass);
+                    }, 2000);
+                }
+                if (classText.turnOffClass != null)
+                {
+                    // Удаляем  класс и устанавливаем через несколько секунд
+                    drinksValidation.removeClass(classText.turnOffClass)
+                    setTimeout (function() {
+                        drinksValidation.addClass(classText.turnOffClass);
+                    }, 2000);
+                }
             }
         });
     })

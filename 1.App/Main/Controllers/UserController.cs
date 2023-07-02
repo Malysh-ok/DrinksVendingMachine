@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Net;
 using Domain.Entities;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,8 @@ namespace App.Main.Controllers;
 
 public class UserController : Controller
 {
+    // TODO: Переделать на асинхронные операции.
+    
     private readonly ILogger<UserController> _logger;
 
     private readonly MainModel _mainModel;
@@ -24,8 +27,6 @@ public class UserController : Controller
 
     public IActionResult Edit2([FromBody] DataFromView dataFromView)   // string[] lines
     {
-        
-        
         return PartialView("_PurchasePartial", _mainModel.EmptyPurchase);
     }
 
@@ -36,21 +37,23 @@ public class UserController : Controller
         {
             var result = _mainModel.UpdateData(dataFromView);
             if (!result)  
-                BadRequest(result.Excptn.Message);        
+                return BadRequest(result.Excptn.Message);      
+                
+            return PartialView("_PurchasePartial", _mainModel.EmptyPurchase);
         }
-        return PartialView("_PurchasePartial", _mainModel.EmptyPurchase);
+        
+        return BadRequest(new { turnOnClass = "is-invalid", turnOffClass = "invisible" });
     }
-
 
     public IActionResult Admin()
     {
         return View();
     }
 
+    // TODO: Сделать валидацию и сообщения об ошибках
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        // TODO: Разобраться с ошибками и перенести Модель в слой Domain
         return View(new ErrorModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

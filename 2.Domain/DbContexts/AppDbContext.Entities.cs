@@ -89,9 +89,11 @@ public sealed partial class AppDbContext
                 
             entity.Property(p => p.CoinCount).IsRequired();
             
+            // entity.Property(p => p.DrinkId).IsRequired();
+            
             entity.Property(p => p.PurchaseNumber).IsRequired();
             
-            entity.Property(p => p.TimeStump).IsRequired(false);
+            entity.Property(p => p.TimeStump).IsRequired();
 
             entity.HasKey(p => p.Id)
                 .HasName("PK_PurchasePart");

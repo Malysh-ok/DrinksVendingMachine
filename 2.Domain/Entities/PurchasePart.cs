@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities.Enums;
 
 namespace Domain.Entities;
 
@@ -23,7 +24,7 @@ public class PurchasePart
     /// <param name="purchaseNumber">Номер покупки.</param>
     /// <param name="timeStump">Дата/время покупки.</param>
     public PurchasePart(CoinEnm coinId, int coinCount = 0, 
-        int? drinkId = null, int purchaseNumber = 0, DateTime? timeStump = null)
+        int drinkId = 0, int purchaseNumber = 0, DateTime? timeStump = null)
     {
         CoinId = coinId;
         CoinCount = coinCount;
@@ -56,7 +57,8 @@ public class PurchasePart
     public Drink? Drink { get; set; }
 
     /// <inheritdoc cref="Drink"/>
-    public int? DrinkId { get; set; }
+    [Required (ErrorMessage = "Не выбран напиток")]
+    public int DrinkId { get; set; }
 
     /// <summary>
     /// Номер покупки.
