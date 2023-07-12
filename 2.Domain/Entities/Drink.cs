@@ -6,19 +6,6 @@
 public class Drink
 {
     /// <summary>
-    /// Конструктор.
-    /// </summary>
-    /// <param name="name">Наименование.</param>
-    /// <param name="price">Цена.</param>
-    /// <param name="count">Оставшееся количество порций.</param>
-    public Drink(string name, int price, int count)
-    {
-        Name = name;
-        Count = count;
-        Price = price;
-    }
-
-    /// <summary>
     /// Идентификатор.
     /// </summary>
     public int Id { get; set; }
@@ -42,4 +29,27 @@ public class Drink
     /// Список частей покупок.
     /// </summary>
     public ICollection<PurchasePart> PurchaseParts { get; set; } = new HashSet<PurchasePart>();
+    
+    /// <summary>
+    /// Конструктор для MVC.
+    /// </summary>
+    public Drink()
+    {
+        Name = string.Empty;
+        Count = 0;
+        Price = 0;
+    }
+    
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    /// <param name="name">Наименование.</param>
+    /// <param name="price">Цена.</param>
+    /// <param name="count">Оставшееся количество порций.</param>
+    public Drink(string name, int price, int count)
+    {
+        Name = name;
+        Count = count;
+        Price = price;
+    }
 }

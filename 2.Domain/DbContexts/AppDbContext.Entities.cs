@@ -38,7 +38,9 @@ public sealed partial class AppDbContext
                     enm => enm.ToInt(),
                     i => i.ToEnumWithException<CoinEnm>()
                 );
-                
+
+            entity.Property(c => c.IsLocked).IsRequired();
+
             entity.Property(c => c.Count).IsRequired();
 
             entity.HasKey(c => c.Id)
@@ -89,7 +91,7 @@ public sealed partial class AppDbContext
                 
             entity.Property(p => p.CoinCount).IsRequired();
             
-            // entity.Property(p => p.DrinkId).IsRequired();
+            entity.Property(p => p.DrinkId).IsRequired();
             
             entity.Property(p => p.PurchaseNumber).IsRequired();
             

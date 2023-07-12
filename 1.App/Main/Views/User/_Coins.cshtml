@@ -1,0 +1,23 @@
+﻿@using Infrastructure.BaseExtensions.ValueTypes
+@model IList<Domain.Entities.PurchasePart>
+
+@for (var i = 0; i < Model.Count; i++)
+{
+    var intId = Model[i].CoinId.ToInt();
+    var coinId = "CoinId" + @intId;
+    var coinCount = "CoinCount" + @intId;
+    var isLocked = Model[i].Coin?.IsLocked ?? true;
+    var btnTypeClass = isLocked 
+        ? "btn-outline-danger rounded-3" 
+        : "btn-secondary rounded-3";
+    <div class="d-flex ms-3" style="flex-basis: 150px">
+        <input type="button" asp-for="@intId" id=@coinId
+               class="requestDataKey col-form-label flex-shrink-1 @btnTypeClass"
+               style="flex-basis: 100px"
+               disabled = "@(isLocked)"
+               onclick="let el = $('#@coinCount'); el.val(Number(el.val()) + 1)" />
+        <input type="text" asp-for="@Model[i].CoinCount" id=@coinCount
+               data-requestDataValue readonly
+               class="requestDataValue form-control text-center ms-2 w--50" />
+    </div>
+}

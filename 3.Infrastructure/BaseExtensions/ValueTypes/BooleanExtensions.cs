@@ -12,5 +12,13 @@
         {
             return value ?? defaultValue;
         }
+        
+        /// <summary>
+        /// Преобразовать в число.
+        /// </summary>
+        public static int ToInt(this bool value)
+        {
+            return value ? 1 : 0;
+        }
     }
 }

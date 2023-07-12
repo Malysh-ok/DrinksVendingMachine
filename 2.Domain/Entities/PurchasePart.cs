@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using Domain.Entities.Enums;
 
 namespace Domain.Entities;
@@ -8,31 +9,6 @@ namespace Domain.Entities;
 /// </summary>
 public class PurchasePart
 {
-    /// <summary>
-    /// Конструктор для MVC.
-    /// </summary>
-    public PurchasePart()
-    {
-    }
-    
-    /// <summary>
-    /// Конструктор.
-    /// </summary>
-    /// <param name="coinId">Монета.</param>
-    /// <param name="coinCount">Количество монет</param>
-    /// <param name="drinkId">Напиток.</param>
-    /// <param name="purchaseNumber">Номер покупки.</param>
-    /// <param name="timeStump">Дата/время покупки.</param>
-    public PurchasePart(CoinEnm coinId, int coinCount = 0, 
-        int drinkId = 0, int purchaseNumber = 0, DateTime? timeStump = null)
-    {
-        CoinId = coinId;
-        CoinCount = coinCount;
-        DrinkId = drinkId;
-        PurchaseNumber = purchaseNumber;
-        TimeStump = timeStump;
-    }
-    
     /// <summary>
     /// Идентификатор.
     /// </summary>
@@ -57,7 +33,6 @@ public class PurchasePart
     public Drink? Drink { get; set; }
 
     /// <inheritdoc cref="Drink"/>
-    [Required (ErrorMessage = "Не выбран напиток")]
     public int DrinkId { get; set; }
 
     /// <summary>
@@ -69,4 +44,39 @@ public class PurchasePart
     /// Дата/время покупки.
     /// </summary>
     public DateTime? TimeStump { get; set; }
+    
+    /// <summary>
+    /// Конструктор для MVC.
+    /// </summary>
+    public PurchasePart()
+    {
+    }
+    
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    /// <param name="coinId">Номинал монеты.</param>
+    /// <param name="coinCount">Количество монет</param>
+    /// <param name="drinkId">Напиток.</param>
+    /// <param name="purchaseNumber">Номер покупки.</param>
+    /// <param name="timeStump">Дата/время покупки.</param>
+    public PurchasePart(CoinEnm coinId, int coinCount = 0, 
+        int drinkId = 0, int purchaseNumber = 0, DateTime? timeStump = null)
+    {
+        CoinId = coinId;
+        CoinCount = coinCount;
+        DrinkId = drinkId;
+        PurchaseNumber = purchaseNumber;
+        TimeStump = timeStump;
+    }
+    
+    /// <inheritdoc cref="PurchasePart(CoinEnm, int, int, int, DateTime?)"/>
+    /// <param name="coin">Монета.</param>
+    [SuppressMessage("ReSharper", "InvalidXmlDocComment")]
+    public PurchasePart(CoinEnm coinId, Coin? coin, int coinCount = 0,
+        int drinkId = 0, int purchaseNumber = 0, DateTime? timeStump = null) 
+        : this(coinId, coinCount, drinkId, purchaseNumber, timeStump)
+    {
+        Coin = coin;
+    }
 }

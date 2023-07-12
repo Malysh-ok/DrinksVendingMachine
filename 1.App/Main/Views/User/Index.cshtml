@@ -1,48 +1,75 @@
-﻿@using Microsoft.AspNetCore.Razor.TagHelpers
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model Domain.Models.MainModel
-
+﻿@using Domain.Models
+@model Domain.Models.UserModel
 @{
-    ViewData["Title"] = "Покупатель";
+    ViewData["Title"] = "Автомат по продаже напитков";
+    ViewData["CodeName"] = "user";
 }
+<h2>@ViewData["Title"]</h2>
 
-@{
-    var drinkList = new SelectList(Model.Drinks,"Id","Name");
-}
-
-<div class="text-center">
-    <h1 class="display-4">Покупка напитков</h1>
-    
-    <div class="col-md-12">
-        <form asp-action="Edit" id="feedBack">
-            <div asp-validation-summary="ModelOnly" class="text-danger "></div>
-            
+<div class="col-md-12">
+    <form asp-action="Buy" id="FeedBack">
+        
+        @* Выбор напитков и монет *@
+        <div class="group mt-4">
             <div class="text-start">
-                <label asp-for="Drinks" class="col-form-label-lg me-3 mt-5 w-auto">Выберите напиток:</label>
+                <label asp-for="Drinks" class="col-form-label-lg me-3 mt-4 w-auto">Выберите напиток:</label>
             </div>
             <div class="d-flex align-middle">
-                @Html.DropDownListFor(model => model.Drinks,
-                    drinkList, "", new { @class = "form-select w-25" })
-                <div asp-validation-for="Drinks" id ="DrinksValidation"
-                     class="text-danger col-form-label ms-2 invisible">Это обязательное поле!</div>
+                <select id="Drinks" name="Drinks"
+                        class="form-select w-auto"
+                        data-val="true" data-val-required="The Drinks field is required.">
+                    <option value=@string.Empty></option>
+                    @foreach (var drink in Model.Drinks)
+                    {
+                        <option value="@drink.Id" data-price="@drink.Price">@drink.Name</option>
+                    }
+                </select>
+                <div class="col-form-label ms-3 me-2">Цена:</div>
+                <input id="DrinkPrice" type="number"
+                       class="form-control text-center pt-2 w--70" readonly>
+            </div>
+
+            <div class="col-form-label-lg me-3 mt-4 w-auto text-start">Введите монеты:</div>
+            <div id="Coins" class="d-flex justify-content-between">
+                @Html.Partial("_Coins", Model.EmptyPurchase)
             </div>
             
-            <div class="col-form-label-lg me-3 mt-5 w-auto text-start">Введите монеты:</div>
-            <div id="purchasePartial" class="d-flex">
-                @Html.Partial("_PurchasePartial", Model.EmptyPurchase)
+            <div class="d-flex mt-3 justify-content-end">
+                <input id="EscBtn" type="button" value="Отмена"
+                       class="col-form-label btn-secondary ms-3 w--100"/>
+                <input id="BuyBtn" type="button" value="Купить"
+                       class="col-form-label btn-secondary ms-3 w--100"/>
             </div>
-            <div class="d-flex mt-5">
-                <div class="col-form-label me-3">Информация:</div>
-                <div class="w-100 col-form-label">
-                    
-                </div>
-                <input id="escBtn" type="button" value="Отмена" 
-                       class="mx-3 px-5 col-form-label btn-primary"/>
-                <input id="buyBtn" type="button" value="Купить" 
-                       class="mх-0 px-5 col-form-label btn-primary"/>
+        </div>
+        
+        @* Информация *@
+        <div class="group d-flex mt-2">
+            <div class="col-form-label-lg me-2 py-0 align-self-center">Информация:</div>
+            <div id="Info"
+                 class="flex-grow-1 pt-1 align-self-center">
+                @Html.Partial("_Info", new InfoModel())
             </div>
-        </form>
-    </div>
+        </div>
+
+        @* Сдача и напиток *@
+        <div class="group mt-2">
+            <div class="d-flex align-middle">
+                <div class="col-form-label me-2">Сдача:</div>
+                <input id="ChangeFromPurchase" type="text" readonly
+                       class="form-control text-start flex-grow-1"
+                       style="flex-basis: 400px">
+                <div class="col-form-label mx-2">Напиток:</div>
+                <input id="BoughtDrink" type="text" readonly
+                       class="form-control text-start"
+                       style="flex-basis: 200px">
+            </div>
+            <div class="d-flex mt-3 justify-content-end">
+                <input id="GetBtn" type="button" value="Забрать"
+                       class="col-form-label btn-secondary ms-3 w--100"/>
+            </div>
+        </div>
+
+    </form>
 </div>
 
 @* Способ передать данные в глобальную переменную js *@
@@ -51,3 +78,7 @@
     let model = @Html.Raw(Json.Serialize(Model));
 </script>
 *@
+
+@section scripts{
+    <script src="~/js/user.js" asp-append-version="true"></script>
+}

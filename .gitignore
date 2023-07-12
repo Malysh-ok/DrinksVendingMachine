@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.sln.DotSettings
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -201,7 +202,7 @@ ClientBin/
 node_modules/
 bower_components/
 dist/
-*.sqlite
+*.sqlite*
 
 # RIA/Silverlight projects
 Generated_Code/

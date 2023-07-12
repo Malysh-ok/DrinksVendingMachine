@@ -1,0 +1,21 @@
+﻿@model IList<Domain.Entities.Drink>
+
+<select id="Drinks" name="Drinks"
+        class="form-select min-w--100 "  style="flex-basis: 200px"
+        data-val="true" data-val-required="The Drinks field is required.">
+    <option value=@string.Empty></option>
+    @foreach (var drink in Model)
+    {
+        <option value="@drink.Id" 
+                data-price="@drink.Price"
+                data-count="@drink.Count">@drink.Name</option>
+    }
+</select>
+
+<div class="col-form-label ms-3 me-2">Цена:</div>
+<input id="DrinkPrice" type="number"
+       class="form-control text-center w--70">
+
+<div class="col-form-label ms-3 me-2">Кол&#8209во:</div>
+<input id="DrinkCount" type="number"
+               class="form-control text-center w--70">

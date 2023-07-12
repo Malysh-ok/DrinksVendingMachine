@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\3.Infrastructure\AppComponents\AppExceptions\AppExceptions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\BaseComponents\BaseComponents.csproj" />
       <ProjectReference Include="..\DbContexts\DbContexts.csproj" />
       <ProjectReference Include="..\Entities\Entities.csproj" />

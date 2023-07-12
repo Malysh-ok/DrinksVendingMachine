@@ -2,7 +2,24 @@ namespace Domain.Models;
 
 public class ErrorModel
 {
-    public string? RequestId { get; set; }
+    /// <summary>
+    /// Текст ошибки.
+    /// </summary>
+    public string? Message { get; set; }
 
-    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    /// <summary>
+    /// Трассировка стека.
+    /// </summary>
+    public string? StackTrace { get; set; }
+    
+    /// <summary>
+    /// Конструктор.
+    /// </summary>
+    /// <param name="message">Текст ошибки.</param>
+    /// <param name="stackTrace">Трассировка стека.</param>
+    public ErrorModel(string? message = null, string? stackTrace = null)
+    {
+        Message = message;
+        StackTrace = stackTrace;
+    }
 }

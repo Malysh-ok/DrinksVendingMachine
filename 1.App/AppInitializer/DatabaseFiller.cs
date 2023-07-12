@@ -20,7 +20,7 @@ public static class DatabaseFiller
             dbContext.Coins.AddRange(
                 new Coin(CoinEnm.One, 1000),
                 new Coin(CoinEnm.Two, 1000),
-                new Coin(CoinEnm.Five, 1000),
+                new Coin(CoinEnm.Five, 1000, false),
                 new Coin(CoinEnm.Ten, 1000)
             );
             dbContext.SaveChanges();

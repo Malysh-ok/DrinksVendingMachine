@@ -17,12 +17,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="App_Data\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\2.Domain\Entities\Entities.csproj" />
       <ProjectReference Include="..\..\2.Domain\Models\Models.csproj" />
+      <ProjectReference Include="..\..\3.Infrastructure\AspModule\Extensions\Extensions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\BaseExtensions\BaseExtensions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\Phrases\Phrases.csproj" />
       <ProjectReference Include="..\AppInitializer\AppInitializer.csproj" />

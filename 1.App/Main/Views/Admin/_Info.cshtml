@@ -1,0 +1,7 @@
+﻿@model Domain.Models.InfoModel
+@{
+    var attributes = @Model.IsErrorMsg
+        ? @"class=""text-danger"" data-clear=""3000"""
+        : @"data-clear=""3000""";
+}
+<div @Html.Raw(attributes)>@Model.Msg</div>

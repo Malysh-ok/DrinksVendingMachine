@@ -1,0 +1,24 @@
+﻿@using Infrastructure.BaseExtensions.ValueTypes
+@model IList<Domain.Entities.Coin>
+
+<label for="Coins" class="invisible"></label>
+<select id="Coins" name="Coins"
+        class="form-select min-w--100 "  style="flex-basis: 200px"
+        data-val="true" data-val-required="The Coins field is required.">
+    <option value=@string.Empty></option>
+    @foreach (var coin in Model)
+    {
+        <option value="@(coin.Id.ToInt())" 
+                data-count="@coin.Count"
+                data-isLocked="@coin.IsLocked.ToInt()">@coin.Id.ToInt()</option>
+    }
+</select>
+
+<label for="CoinCount" class="col-form-label ms-3 me-2">Количество:</label>
+<input id="CoinCount" type="number"
+       class="form-control text-center w--70">
+
+<label for="CoinIsLocked" class="col-form-label ms-3 me-2">Заблокировать:</label>
+<input id="CoinIsLocked" type="checkbox"
+       class="text-center w--20">
+

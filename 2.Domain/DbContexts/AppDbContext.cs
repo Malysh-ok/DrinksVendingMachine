@@ -18,17 +18,8 @@ public sealed partial class AppDbContext : DbContext
     /// <summary>
     /// Конструктор, запрещающий создание экземпляра без параметров.
     /// </summary>
-    public AppDbContext()
+    private AppDbContext()
     {
-    }
-        
-    /// <summary>
-    /// Конструктор.
-    /// </summary>
-    internal AppDbContext(string connectionString)
-        : base()
-    {
-        _connectionString = connectionString;
     }
 
     /// <summary>
