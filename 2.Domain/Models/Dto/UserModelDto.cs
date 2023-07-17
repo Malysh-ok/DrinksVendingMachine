@@ -1,7 +1,7 @@
 ﻿namespace Domain.Models.Dto;
 
 /// <summary>
-/// Класс, предназначенный для передачи данных из главной Модели пользователя Контроллеру UserController.
+/// Класс, предназначенный для передачи данных из главной Модели покупателя Контроллеру BuyerController.
 /// </summary>
 public class UserModelDto
 {

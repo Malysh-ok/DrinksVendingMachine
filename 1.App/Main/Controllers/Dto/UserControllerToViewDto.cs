@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace App.Main.Controllers.Dto;
 
 /// <summary>
-/// Класс, предназначенный для передачи данных от Контроллера <see cref="UserController"/>
+/// Класс, предназначенный для передачи данных от Контроллера <see cref="BuyerController"/>
 /// в Представление.
 /// </summary>
 public class UserControllerToViewDto

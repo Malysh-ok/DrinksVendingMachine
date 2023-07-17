@@ -1,5 +1,4 @@
 ﻿@using Domain.Models
-@using Microsoft.CodeAnalysis.Scripting
 @model Domain.Models.AdminModel
 @{
     ViewData["Title"] = "Автомат по продаже напитков";
@@ -23,20 +22,22 @@
                        class="col-form-label btn-secondary ms-3 w--100"/>
             </div>
             
-            <div class="col-form-label-lg mt-2">Добавление напитка:</div>
+            <div class="col-form-label-lg mt-2">Удаление/добавление напитка:</div>
             <div class="d-flex">
                 @Html.Partial("_AddDrink", Model.Drinks)
             </div>
             <div class="d-flex justify-content-end flex-grow-1 mt-3">
-                   <input id="AddDrinkBtn" type="button" value="Добавить"
-                          class="col-form-label btn-secondary ms-3 w--100"/>
+                <input id="RemoveDrinkBtn" type="button" value="Удалить"
+                       class="col-form-label btn-secondary ms-3 w--100"/>
+                <input id="AddDrinkBtn" type="button" value="Добавить"
+                       class="col-form-label btn-secondary ms-3 w--100"/>
             </div>
         </div>
 
         @* Монеты *@
         <div class="group mt-2">
             <div class="col-form-label-lg pt-0">Настройка монет:</div>
-            <div class="d-flex ">
+            <div class="d-flex">
                 @Html.Partial("_Coins", Model.Coins)
             </div>
             <div class="d-flex justify-content-end flex-grow-1 mt-3">

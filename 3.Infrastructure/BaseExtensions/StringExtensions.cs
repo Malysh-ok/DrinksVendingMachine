@@ -355,6 +355,21 @@ namespace Infrastructure.BaseExtensions
 
             return text.All(c => (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
         }
+        
+        /// <summary>
+        /// Преобразование строки в логическое значение. 
+        /// </summary>
+        /// <remarks>
+        /// "true" => true, "True" => true, "false" => false и т.п.
+        /// </remarks>
+        /// <param name="stringValue">Исходная строка.</param>
+        /// <param name="defaultValue">Значение результата в случае ошибки преобразования.</param>
+        public static bool ParseToBool(this string stringValue, bool defaultValue = false)
+        {
+            return bool.TryParse(stringValue, out var value)
+                ? value
+                : defaultValue;
+        }
 
         /// <summary>
         /// Преобразование строки в <see cref="double"/>, с заменой разделителя '.' или ','

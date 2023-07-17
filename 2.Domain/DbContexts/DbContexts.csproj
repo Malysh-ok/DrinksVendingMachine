@@ -30,8 +30,4 @@
       </Content>
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="AppDbContextFactory.cs" />
-    </ItemGroup>
-
 </Project>

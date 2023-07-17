@@ -37,7 +37,7 @@ function getDrink() {
     return drink;
 }
 
-// Получение объекта, связанного с добавлением напитка, для отправки контроллеру
+// Получение объекта, связанного с добавлением/удалением напитка, для отправки контроллеру
 function getAddedDrink() {
     // Объект, для отправки контроллеру
     let drink = {}
@@ -176,6 +176,30 @@ $(document).ready(function () {
                 request.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
             },
             
+            success: function (response) {
+                handleAjaxResponse(response)
+            },
+
+            error: function (response) {
+                console.log("!!!!! ERROR !!!!!\n", response);
+                handleErrorAjaxResponse(response);
+            }
+        })
+    })
+
+    // Кнопка "Удалить" (для Напитка)
+    $("#RemoveDrinkBtn").click(function () {
+        // Запрос контроллеру
+        $.ajax({
+            url: 'Admin/RemoveDrink',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(getAddedDrink()),
+
+            beforeSend: function (request) {
+                request.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
+            },
+
             success: function (response) {
                 handleAjaxResponse(response)
             },

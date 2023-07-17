@@ -12,12 +12,12 @@ using Infrastructure.BaseExtensions.ValueTypes;
 namespace Domain.Models;
 
 /// <summary>
-/// Главная модель пользователя.
+/// Главная модель покупателя.
 /// </summary>
 /// <remarks>
 /// Вся основная бизнес-логика сосредоточена здесь.
 /// </remarks>
-public class UserModel
+public class BuyerModel
 {
     /// <summary>
     /// Контекст БД.
@@ -42,7 +42,7 @@ public class UserModel
     /// Конструктор.
     /// </summary>
     /// <param name="dbContext">Контекст БД.</param>
-    public UserModel(AppDbContext dbContext)
+    public BuyerModel(AppDbContext dbContext)
     {
         _dbContext = dbContext;
         IsGivenOutLockedCoins = false;      // настройка по умолчанию -

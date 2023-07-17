@@ -1,4 +1,4 @@
-﻿// Для страницы User
+﻿// Для страницы Buyer
 
 // Массив идентификаторов "запланированных вызовов" (setTimeout)
 let timeoutStack = [];
@@ -94,7 +94,7 @@ $(document).ready(function () {
     $("#BuyBtn").click(function () {
         // Запрос контроллеру
         $.ajax({
-            url: 'User/Buy',
+            url: 'Buyer/Buy',
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(getPurchaseData()),
@@ -118,7 +118,7 @@ $(document).ready(function () {
     $("#EscBtn").click(function () {
         // Запрос контроллеру
         $.ajax({
-            url: 'User/Escape',
+            url: 'Buyer/Escape',
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(getPurchaseData()),
@@ -142,7 +142,7 @@ $(document).ready(function () {
     $("#GetBtn").click(function () {
         // Запрос контроллеру
         $.ajax({
-            url: 'User/UserReceiving',
+            url: 'Buyer/UserReceiving',
             type: 'POST',
             contentType: "application/json; charset=utf-8",
 

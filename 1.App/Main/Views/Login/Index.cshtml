@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Razor.TagHelpers
+@model App.Main.Controllers.Dto.LoginControllerDto
+
+@{
+    ViewBag.Title = "Вход в систему";
+    // Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="col-md-12">
+    <form asp-action="Index" id="FeedBack">
+        <div class="group-sm mt-4 mx-auto">
+            <div class="w-75 mx-auto">
+                @* Общие ошибки *@
+                <div class="h--20 mt-2">
+                    @Html.ValidationSummary(true, "",
+                        new { @class = "text-danger" })
+                </div>
+
+                @* Логин *@
+                <label for="Login" class="col-form-label mt-2">Логин:</label>
+                <input id="Login" type="text"
+                       class="form-control"
+                       asp-for="@Model.User!.Name">
+                <div class="h--20">
+                    @Html.ValidationMessageFor(model => model.User!.Name, "",
+                        new { @class = "text-danger" })
+                </div>
+
+                @* Пароль *@
+                <label for="Password" class="col-form-label mt-2">Пароль:</label>
+                <input id="Password" type="password"
+                       class="form-control"
+                       asp-for="@Model.User!.Password">
+                <div class="h--20">
+                    @Html.ValidationMessageFor(model => model.User!.Password, "",
+                        new { @class = "text-danger" })
+                </div>
+
+                @* Чекбокс *@
+                <div class="d-flex mt-3">
+                    <input id="IsJwsInAddressBarParams" name="IsJwsInAddressBarParams"
+                           class="text-center w--20" type="checkbox"
+                           asp-for="@Model.IsJwsInAddressBarParams"/>
+
+                    <label for="IsJwsInAddressBarParams" class="col-form-label ms-3">
+                        Вход в админ. интерфейс по ключу в адресной строке
+                    </label>
+                </div>
+
+                <div class="d-flex mt-3 w-auto justify-content-end">
+                    <input id="SubmitLogin" type="submit" value="Войти"
+                           class="col-form-label btn-secondary ms-3 w--100"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,6 +1,9 @@
-﻿@{
+﻿@using Infrastructure.BaseExtensions
+@{
     string userNavbarBrand = null!;
     string adminNavbarBrand = null!;
+    string? jwtStr = ViewData["JwtStr"]?.ToString();
+    ;
 }
 <!DOCTYPE html>
 <html lang="ru">
@@ -29,7 +32,9 @@
                             }
                         }
                         <a class="nav-link text-dark @userNavbarBrand"
-                           asp-area="" asp-controller="User" asp-action="Index">Покупатель</a>
+                           asp-area="" asp-controller="Buyer" asp-action="Index">
+                            Покупатель
+                        </a>
                     </li>
                     <li class="nav-item">
                         @{
@@ -39,7 +44,14 @@
                             }
                         }
                         <a class="nav-link text-dark @adminNavbarBrand"
-                           asp-area="" asp-controller="Admin" asp-action="Index">Администратор</a>
+                           asp-area="" asp-controller="Admin" asp-action="Index" asp-route-access_token="@jwtStr">
+                            Администратор
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-dark"
+                           asp-area="" asp-controller="Login" asp-action="Logout"
+                        >Выйти</a>
                     </li>
                     @* TODO: Выкинуть! *@
                     <li class="nav-item">
@@ -60,7 +72,7 @@
 
 <footer class="border-top footer text-muted">
     <div class="container">
-        &copy; 2023 - <a asp-area="" asp-controller="User" asp-action="License">License</a>
+        &copy; 2023 - <a asp-area="" asp-controller="Buyer" asp-action="License">License</a>
     </div>
 </footer>
 

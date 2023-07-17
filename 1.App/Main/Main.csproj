@@ -23,9 +23,12 @@
       <ProjectReference Include="..\..\3.Infrastructure\BaseExtensions\BaseExtensions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\Phrases\Phrases.csproj" />
       <ProjectReference Include="..\AppInitializer\AppInitializer.csproj" />
+      <ProjectReference Include="..\Authorization\Authorization.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Invio.Extensions.Authentication.JwtBearer" Version="2.0.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -35,6 +38,7 @@
 
     <ItemGroup>
       <None Remove="App_Data\Main_.sqlite" />
+      <None Include="wwwroot\favicon.png" />
     </ItemGroup>
 
 </Project>

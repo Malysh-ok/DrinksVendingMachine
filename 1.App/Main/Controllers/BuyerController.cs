@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using App.Authorization.Models;
 using App.Main.Controllers.Dto;
 using Domain.Entities;
 using Domain.Models;
@@ -12,12 +13,20 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace App.Main.Controllers;
 
-public class UserController : Controller
+/// <summary>
+/// Контроллер для работы с покупателем.
+/// </summary>
+public class BuyerController : Controller
 {
     /// <summary>
     /// Главная модель.
     /// </summary>
-    private readonly UserModel _userModel;
+    private readonly BuyerModel _buyerModel;
+
+    /// <summary>
+    /// Модель авторизации.
+    /// </summary>
+    private readonly LoginModel _loginModel;
 
     /// <summary>
     /// Механизм рендеринга Представления.
@@ -27,35 +36,45 @@ public class UserController : Controller
     /// <summary>
     /// Конструктор.
     /// </summary>
-    /// <param name="userModel">Главная модель.</param>
+    /// <param name="buyerModel">Главная модель.</param>
+    /// <param name="loginModel">Модель авторизации.</param>
     /// <param name="viewEngine">Механизм рендеринга Представления.</param>
-    public UserController(UserModel userModel, ICompositeViewEngine viewEngine)
+    public BuyerController(BuyerModel buyerModel, LoginModel loginModel, ICompositeViewEngine viewEngine)
     {
-        _userModel = userModel;
+        _buyerModel = buyerModel;
+        _loginModel = loginModel;
         _viewEngine = viewEngine;
     }
     
-    // Показываем главное Представление
+    /// <summary>
+    /// Показываем главное Представление.
+    /// </summary>
     public IActionResult Index()
     {
-        return View(_userModel);
+        // Если JWS-токен передается через параметры в адресной строке -
+        // пробрасываем токен модели
+        ViewData["JwtStr"] = _loginModel.GetJwsInQueryFlag(HttpContext)
+            ? _loginModel.JwtStr
+            : null;
+
+        return View(_buyerModel);
     }
     
     // TODO: На будущее (переделать на асинхронные операции):
     // public async Task<IActionResult> Index()
     // {
-    //     return View(await _userModel);
+    //     return View(await _buyerModel);
     // }
     
     /// <summary>
-    /// Обработка нажатия кнопки "Отмена"
+    /// Обработка нажатия кнопки "Отмена".
     /// </summary>
     /// <param name="purchaseDto">Объект, характеризующий покупку напитка.</param>
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Escape([FromBody] PurchaseDto purchaseDto)
     {
-        var returnedCoins = _userModel.GetChange(purchaseDto.PurchaseParts);
+        var returnedCoins = _buyerModel.GetChange(purchaseDto.PurchaseParts);
         var infoHtml = returnedCoins.IsNullOrEmpty()
             ? string.Empty
             : this.ConvertViewToString(
@@ -71,7 +90,7 @@ public class UserController : Controller
     }
 
     /// <summary>
-    /// Обработка нажатия кнопки "Купить"
+    /// Обработка нажатия кнопки "Купить".
     /// </summary>
     /// <param name="purchaseDto">Объект, характеризующий покупку напитка.</param>
     [HttpPost]
@@ -124,7 +143,7 @@ public class UserController : Controller
             
         // ---------------------------------
         // Обновляем данные в главной Модели
-        var result = _userModel.UpdateData(purchaseDto.PurchaseParts, purchaseDto.DrinkId);
+        var result = _buyerModel.UpdateData(purchaseDto.PurchaseParts, purchaseDto.DrinkId);
         
         switch (result.Excptn)
         {
@@ -143,7 +162,7 @@ public class UserController : Controller
             case DrinkIsOverException:
             {
                 // Напиток закончился
-                var returnedCoins = _userModel.GetChange(purchaseDto.PurchaseParts);
+                var returnedCoins = _buyerModel.GetChange(purchaseDto.PurchaseParts);
                 var infoHtml = this.ConvertViewToString(
                     PartialView("_Info", 
                         new InfoModel($"{result.Excptn.Message} Заберите деньги.", 
@@ -160,7 +179,7 @@ public class UserController : Controller
             case NoMoneyLeftException:
             {
                 // В автомате закончились деньги
-                var returnedCoins = _userModel.GetChange(purchaseDto.PurchaseParts);
+                var returnedCoins = _buyerModel.GetChange(purchaseDto.PurchaseParts);
                 var infoHtml = this.ConvertViewToString(
                     PartialView("_Info", 
                         new InfoModel("Нет возможности выдать сдачу. Заберите деньги.", 
@@ -191,7 +210,7 @@ public class UserController : Controller
     }
 
     /// <summary>
-    /// Обработка нажатия кнопки "Забрать"
+    /// Обработка нажатия кнопки "Забрать".
     /// </summary>
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -213,18 +232,4 @@ public class UserController : Controller
     {
         return View("License");
     }
-    
-    // [Route("/error")]
-    // public IActionResult HandleError()
-    // {
-    //     var exceptionHandlerFeature =
-    //         HttpContext.Features.Get<IExceptionHandlerFeature>()!;
-    //     // return Content("Вот и жопа пришла!!!\r\n"
-    //     //                + exceptionHandlerFeature.Error.Flatten() + "\r\n"
-    //     //                + exceptionHandlerFeature.Error.StackTrace);
-    //     return View("Error", new ErrorModel(
-    //         exceptionHandlerFeature.Error.Flatten(),
-    //         exceptionHandlerFeature.Error.StackTrace
-    //     ));
-    // }
 }

@@ -90,6 +90,33 @@ public class AdminModel
     }
     
     /// <summary>
+    /// Удаляем напиток из модели.
+    /// </summary>
+    /// <param name="drink">Удаляемый напиток.</param>
+    /// <returns>Либо true (при успешной операции), либо Exception,
+    /// обернутое в <see cref="Result{T}"/>.</returns>
+    public Result<bool> RemoveDrink(Drink drink)
+    {
+        try
+        {
+            var existingDrink = _dbContext.Drinks
+                .FirstOrDefault(d => d.Name.Equals(drink.Name));
+            if (existingDrink is null)
+                // Напитка с таким названием не существует
+                return Result<bool>.Fail(new DrinkNotExistsException());
+            
+            _dbContext.Remove(existingDrink);
+            _dbContext.SaveChanges();
+            
+            return Result<bool>.Done(true);
+        }
+        catch (Exception ex)
+        {
+            return Result<bool>.Fail(new AdminModelDataUpdateException(innerException: ex));        
+        }
+    }
+    
+    /// <summary>
     /// Обновляем монету в модели.
     /// </summary>
     /// <param name="coinTmp">Обновляемая монета.</param>

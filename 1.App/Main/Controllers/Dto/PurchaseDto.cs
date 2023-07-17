@@ -8,8 +8,8 @@ namespace App.Main.Controllers.Dto;
 /// </summary>
 /// <remarks>
 /// Класс, предназначенный для передачи данных
-/// из представления пользователя в контроллер <see cref="UserController"/> 
-/// (для метода действия <see cref="UserController.Buy"/>).
+/// из представления покупателя в контроллер <see cref="BuyerController"/> 
+/// (для метода действия <see cref="BuyerController.Buy"/>).
 /// </remarks>
 public class PurchaseDto
 {

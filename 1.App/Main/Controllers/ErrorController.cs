@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace App.Main.Controllers;
 
+/// <summary>
+/// Контроллер для работы с ошибками.
+/// </summary>
+
 public class ErrorController : Controller
 {
     /// <summary>
