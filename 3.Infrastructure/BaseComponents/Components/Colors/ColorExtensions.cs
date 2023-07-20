@@ -179,7 +179,6 @@ namespace Infrastructure.BaseComponents.Components.Colors
         /// <summary>
         /// Коррекция HSB-цвета.
         /// </summary>
-        /// <returns></returns>
         public static HsbColor AdjustHsbColor(this HsbColor hsbColor, 
             int deltaAlpha, float deltaHue, float deltaSaturation, float deltaBrightness)
         {

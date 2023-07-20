@@ -15,7 +15,6 @@ public static class ControllerExtensions
     /// Получаем данные в виде кортежа из результата Представления <paramref name="objectViewResult"/>,
     /// который может быть или <see cref="ViewResult"/>, или <see cref="PartialViewResult"/>.
     /// </summary>
-    /// <returns></returns>
     private static (string ViewName, ViewDataDictionary ViewData, ITempDataDictionary TempData)
         GetViewResultData(this ControllerBase controller, object objectViewResult)
     {

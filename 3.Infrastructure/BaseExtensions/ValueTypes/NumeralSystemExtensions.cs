@@ -119,7 +119,6 @@ namespace Infrastructure.BaseExtensions.ValueTypes
         /// </summary>
         /// <param name="hexString">Исходная шестнадцатеричная строка</param>
         /// <param name="defaultValue">Значение результата, в случае ошибки преобразования.</param>
-        /// <returns></returns>
         public static uint HexToUint(this string hexString, uint defaultValue = 0)
         {
             if (uint.TryParse(hexString, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var value))

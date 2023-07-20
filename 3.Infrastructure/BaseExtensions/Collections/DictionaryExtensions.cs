@@ -33,7 +33,6 @@ namespace Infrastructure.BaseExtensions.Collections
         /// <param name="dictionary">Словарь.</param>
         /// <param name="key">Ключ.</param>
         /// <param name="defaultValue">Значение по умолчанию.</param>
-        /// <returns></returns>
         public static TValue GetValueOrDefault<TKey, TValue>(
             this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue) where TValue : struct
         {
