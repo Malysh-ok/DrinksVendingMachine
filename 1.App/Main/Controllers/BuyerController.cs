@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using App.Authorization.Models;
+﻿using App.Infrastructure.Authorization.Models;
 using App.Main.Controllers.Dto;
 using Domain.Entities;
 using Domain.Models;
@@ -51,10 +50,10 @@ public class BuyerController : Controller
     /// </summary>
     public IActionResult Index()
     {
-        // Если JWS-токен передается через параметры в адресной строке -
+        // Если JWT-токен передается через параметры запроса (query) -
         // пробрасываем токен модели
-        ViewData["JwtStr"] = _loginModel.GetJwsInQueryFlag(HttpContext)
-            ? _loginModel.JwtStr
+        ViewData["JwtStr"] = _loginModel.GetJwtInQueryFlag(HttpContext)
+            ? _loginModel.GetJwtStr()
             : null;
 
         return View(_buyerModel);

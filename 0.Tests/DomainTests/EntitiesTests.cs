@@ -1,5 +1,4 @@
-﻿using App.Authorization;
-using App.Authorization.Models;
+﻿using App.Infrastructure.Authorization;
 using Domain.Entities.Enums;
 using Infrastructure.AppComponents.AppExceptions;
 using Infrastructure.BaseExtensions.ValueTypes;
@@ -19,10 +18,9 @@ public class EntitiesTests
         
         var jwt = LoginManager.CreateJwt(dt);
         var strJwt = LoginManager.SerializeJwt(jwt);
-        var loginModel = new LoginModel(dt);
-
+  
         // var accessToken = @"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJleHAiOjE2ODkxODg0MDAsImlzcyI6IkRyaW5rc1ZlbmRpbmdNYWNoaW5lU2VydmVyIiwiYXVkIjoiRHJpbmtzVmVuZGluZ01hY2hpbmVDbGllbnQifQ.CssYROuvQUuZTsclijMKDHL7viiJySQk6YA0qlNFJpo";
         var isValitToken = LoginManager.IsValidJwtStr(strJwt);
-
+        var jwtStr = LoginManager.SerializeJwt(null);
     }
 }

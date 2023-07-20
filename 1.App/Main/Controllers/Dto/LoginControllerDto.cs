@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using App.Authorization.Entities;
+﻿using App.Infrastructure.Authorization.Entities;
 
 namespace App.Main.Controllers.Dto;
 
@@ -15,9 +14,9 @@ public class LoginControllerDto
     public Personality? User { get; set; }
 
     /// <summary>
-    /// Признак того, что JWS-токен передается через параметры в адресной строке.
+    /// Признак того, что JWT-токен передается через параметры запроса (query).
     /// </summary>
-    public bool IsJwsInAddressBarParams { get; set; }
+    public bool IsJwtInAddressBarParams { get; set; }
 
     /// <summary>
     /// Конструктор для MVC.
@@ -25,27 +24,28 @@ public class LoginControllerDto
     public LoginControllerDto()
     {
         User = new Personality();
-        IsJwsInAddressBarParams = false;
+        IsJwtInAddressBarParams = false;
     }
     
     /// <summary>
     /// Конструктор.
     /// </summary>
-    /// <param name="user"></param>
-    /// <param name="isJwsInAddressBarParams"></param>
-    public LoginControllerDto(Personality? user, bool isJwsInAddressBarParams)
+    /// <param name="user">Пользователь.</param>
+    /// <param name="isJwtInAddressBarParams">Признак того,
+    /// что JWT-токен передается через параметры запроса (query).</param>
+    public LoginControllerDto(Personality? user, bool isJwtInAddressBarParams)
     {
         User = user;
-        IsJwsInAddressBarParams = isJwsInAddressBarParams;
+        IsJwtInAddressBarParams = isJwtInAddressBarParams;
     }
 
     /// <summary>
     /// Извлечение из текущего экземпляра класса сущности <see cref="User"/>
-    /// и логического значения <see cref="LoginControllerDto.IsJwsInAddressBarParams"/>
+    /// и логического значения <see cref="IsJwtInAddressBarParams"/>
     /// (в виде кортежа).
     /// </summary>
-    public (Personality? user, bool isJwsInQuery) ExtractData()
+    public (Personality? user, bool isJwtInQuery) ExtractData()
     {
-        return (user: User, isJwsInQuery: IsJwsInAddressBarParams);
+        return (user: User, isJwtInQuery: IsJwtInAddressBarParams);
     }
 }

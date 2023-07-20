@@ -16,7 +16,7 @@ public class ErrorController : Controller
     /// </summary>
     /// <param name="message">Текст ошибки.</param>
     /// <param name="stackTrace">Трассировка стека.</param>
-    [Route("/error")]
+    [Route("/Error")]
     public IActionResult HandleError(string? message, string? stackTrace)
     {
         var exceptionHandlerFeature =

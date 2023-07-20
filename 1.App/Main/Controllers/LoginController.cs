@@ -1,9 +1,11 @@
 ﻿using System.Security.Claims;
-using App.Authorization;
-using App.Authorization.Models;
+using System.Security.Policy;
+using App.Infrastructure.Authorization.Models;
 using App.Main.Controllers.Dto;
+using Infrastructure.BaseExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace App.Main.Controllers;
 
@@ -31,14 +33,14 @@ public class LoginController : Controller
     /// </summary>
     [AllowAnonymous]
     [HttpGet]
-    [Route("Admin/Login")]
+    [Route("Login")]
     public IActionResult Index([FromQuery(Name = "access_token")] string jwtStr)
     {
         if (_mainModel.IsValidJwtStr(HttpContext, jwtStr))
         {
             // Если токен валиден - на страницу администратора
             return RedirectToAction("Index", "Admin",
-                _mainModel.GetJwsInQueryFlag(HttpContext)
+                _mainModel.GetJwtInQueryFlag(HttpContext)
                     ? new {access_token = jwtStr}
                     : null
             );
@@ -46,7 +48,7 @@ public class LoginController : Controller
         
         return View("Index",
             new LoginControllerDto(_mainModel.GetSuperuserWithoutPassword(),
-                _mainModel.GetJwsInQueryFlag(HttpContext))
+                _mainModel.GetJwtInQueryFlag(HttpContext))
         );
     }
 
@@ -54,17 +56,17 @@ public class LoginController : Controller
     /// Получаем данные из главного Представления.
     /// </summary>
     [HttpPost]
-    [Route("Admin/Login")]
-    [ValidateAntiForgeryToken]
+    [Route("Login")]
+    // [ValidateAntiForgeryToken]
     public IActionResult Index(LoginControllerDto loginControllerDto)
     {
-        // Извлекаем данные из loginControllerDto в person и isJwsInAddressBarParams
-        var (user, isJwsInQuery) = loginControllerDto.ExtractData();
+        // Извлекаем данные из loginControllerDto в person и isJwtInAddressBarParams
+        var (user, isJwtInQuery) = loginControllerDto.ExtractData();
 
         if (ModelState.IsValid)
         {
-            // Устанавливаем признак того, что JWS-токен передается через параметры в адресной строке
-            _mainModel.SetJwsInQueryFlag(isJwsInQuery, HttpContext);
+            // Устанавливаем признак того, что JWT-токен передается через параметры запроса (query)
+            _mainModel.SetJwtInQueryFlag(isJwtInQuery, HttpContext);
             
             if (!_mainModel.IsAuthorization(user))
             {
@@ -76,13 +78,18 @@ public class LoginController : Controller
                 // Пользователь прошел авторизацию
                 
                 // Сохраняем токен
-                _mainModel.UpdateAndSaveJws(HttpContext);
+                _mainModel.UpdateAndSaveJwt(HttpContext);
                 
-                return RedirectToAction("Index", "Admin",
-                    isJwsInQuery
-                        ? new {access_token = _mainModel.JwtStr}
-                        : null
-                );
+                // Перенаправляем на прошлую страницу
+                var referer = TempData["Referer"]?.ToString() 
+                              ?? Url.Action("Index","Buyer");
+                if (referer.IsContains("Admin"))
+                    return RedirectToAction("Index", "Admin",
+                        _mainModel.GetJwtInQueryFlag(HttpContext)
+                            ? new {access_token = _mainModel.GetJwtStr()}
+                            : null
+                    );
+                return Redirect(referer!);
             }
         }
         
@@ -92,12 +99,24 @@ public class LoginController : Controller
     /// <summary>
     /// Разлогиниться.
     /// </summary>
-    [Route("Admin/Logout")]
+    [Route("Logout")]
     public IActionResult Logout()
     {
         // Делаем невалидным токен
-        _mainModel.CancelJws(HttpContext);
+        _mainModel.CancelJwt(HttpContext);
+
+        // Сохраняем страницу с которой уходим, если она не Login
+        var referer = Request.Headers["Referer"].ToString();
+        if (!referer.IsContains("Login"))
+            TempData["Referer"] = referer;
         
         return RedirectToAction("Index");
+    }
+
+    [Route("AjaxRedirect")]
+    public IActionResult AjaxRedirect()
+    {
+        var url = Url.Action("Index");
+        return Json(new { RedirectUrl = url });
     }
 }

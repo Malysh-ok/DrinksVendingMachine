@@ -23,11 +23,12 @@
       <ProjectReference Include="..\..\3.Infrastructure\BaseExtensions\BaseExtensions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\Phrases\Phrases.csproj" />
       <ProjectReference Include="..\AppInitializer\AppInitializer.csproj" />
-      <ProjectReference Include="..\Authorization\Authorization.csproj" />
+      <ProjectReference Include="..\Infrastructure\Authorization\Authorization.csproj" />
+      <ProjectReference Include="..\Infrastructure\DbConfigure\DbConfigure.csproj" />
+      <ProjectReference Include="..\Infrastructure\Middlewares\Middlewares.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Invio.Extensions.Authentication.JwtBearer" Version="2.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8">
         <PrivateAssets>all</PrivateAssets>

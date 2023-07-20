@@ -8,11 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\2.Domain\DbContexts\DbContexts.csproj" />
+      <ProjectReference Include="..\..\3.Infrastructure\AppComponents\AppExceptions\AppExceptions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\BaseComponents\BaseComponents.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\BaseExtensions\BaseExtensions.csproj" />
       <ProjectReference Include="..\..\3.Infrastructure\Phrases\Phrases.csproj" />

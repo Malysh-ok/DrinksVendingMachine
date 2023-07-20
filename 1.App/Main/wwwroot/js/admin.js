@@ -62,6 +62,11 @@ function getCoin() {
 // Обрабатываем ответ сервера после нажатия кнопок в Представлении
 function handleAjaxResponse(response){
     
+    if (response.redirectUrl != null) {
+        // Если пришел ответ о перенаправлении
+        window.location.href = response.redirectUrl;
+    }
+    
     if (response.isClearDrinks) {
         // Очищаем настройку напитков
         clearDrinks();
@@ -116,9 +121,11 @@ function handleAjaxResponse(response){
 
 // Обрабатываем ответ сервера если ошибка
 function handleErrorAjaxResponse(response) {
+    
     let infoHtml = "<span class='text-danger small'>HTTP ERROR " + response.status + ". "
         // + response.responseText + "</span>";
-        + "Подробную информацию см. в консоли Инструментов разработчика.</span>"
+        + "Подробную информацию см. в консоли Инструментов разработчика."
+        + "<br/>Для дальнейшей работы рекомендуем перезагрузить страницу.</span>"
     $('#Info').html(infoHtml);
 }
 

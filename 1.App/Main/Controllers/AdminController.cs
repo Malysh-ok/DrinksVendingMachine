@@ -1,4 +1,5 @@
-﻿using App.Authorization.Models;
+﻿using App.Infrastructure.Authorization;
+using App.Infrastructure.Authorization.Models;
 using App.Main.Controllers.Dto;
 using Domain.Entities;
 using Domain.Models;
@@ -50,10 +51,11 @@ public class AdminController : Controller
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult Index()
     {
-        // Если JWS-токен передается через параметры в адресной строке -
+        var isValid = LoginManager.IsValidJwtStr(_loginModel.GetJwtStr());
+        // Если JWT-токен передается через параметры запроса (query) -
         // пробрасываем токен модели
-        ViewData["JwtStr"] = _loginModel.GetJwsInQueryFlag(HttpContext)
-            ? _loginModel.JwtStr
+        ViewData["JwtStr"] = _loginModel.GetJwtInQueryFlag(HttpContext)
+            ? _loginModel.GetJwtStr()
             : null;
         
         return View(_mainModel);
@@ -63,7 +65,8 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Применить" (для Напитка).
     /// </summary>
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    // [ValidateAntiForgeryToken]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult ApplyDrink([FromBody] [Bind("Id, Count, Price")] Drink drink)
     {
         // В контроллере - только валидация
@@ -118,7 +121,8 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Добавить" (для Напитка).
     /// </summary>
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    // [ValidateAntiForgeryToken]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult AddDrink([FromBody] [Bind("Name, Count, Price")] Drink drink)
     {
         // В контроллере - только валидация
@@ -186,7 +190,8 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Удалить" (для Напитка).
     /// </summary>
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    // [ValidateAntiForgeryToken]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult RemoveDrink([FromBody] [Bind("Name")] Drink drink)
     {
         // В контроллере - только валидация
@@ -241,7 +246,8 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Применить" (для Монет).
     /// </summary>
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    // [ValidateAntiForgeryToken]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult ApplyCoin([FromBody] [Bind("Id, Count, IsLocked")] Coin coin)
     {
         // В контроллере - только валидация
@@ -296,7 +302,8 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Отмена".
     /// </summary>
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    // [ValidateAntiForgeryToken]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult Escape()
     {
         var partialViewResult = PartialView("_Info", 
