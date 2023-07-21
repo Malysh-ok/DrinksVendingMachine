@@ -1,11 +1,8 @@
-﻿using System.Security.Claims;
-using System.Security.Policy;
-using App.Infrastructure.Authorization.Models;
+﻿using App.Infrastructure.Authorization.Models;
 using App.Main.Controllers.Dto;
 using Infrastructure.BaseExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace App.Main.Controllers;
 
@@ -65,7 +62,7 @@ public class LoginController : Controller
 
         if (ModelState.IsValid)
         {
-            // Устанавливаем признак того, что JWT-токен передается через параметры запроса (query)
+            // Устанавливаем признак того, что JWT-токен передается посредством строки запроса URL
             _mainModel.SetJwtInQueryFlag(isJwtInQuery, HttpContext);
             
             if (!_mainModel.IsAuthorization(user))

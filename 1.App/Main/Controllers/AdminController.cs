@@ -51,7 +51,7 @@ public class AdminController : Controller
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult Index()
     {
-        // Если JWT-токен передается через параметры запроса (query) -
+        // Если JWT-токен передается посредством строки запроса URL -
         // пробрасываем токен модели
         ViewData["JwtStr"] = _loginModel.GetJwtInQueryFlag(HttpContext)
             ? _loginModel.GetJwtStr()

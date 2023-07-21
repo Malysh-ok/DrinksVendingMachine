@@ -4,7 +4,7 @@ using App.Infrastructure.Authorization;
 namespace App.Infrastructure.Middlewares;
 
 /// <summary>
-/// Промежуточный слой, который записывает JWT-токен из Query-параметров в заголовок HTTP-запроса.
+/// Промежуточный слой, который записывает JWT-токен из параметров строки запроса URL в заголовок HTTP-запроса.
 /// </summary>
 public class QueryStringToHeaderMiddleware
 {

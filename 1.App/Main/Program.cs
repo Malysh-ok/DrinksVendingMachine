@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = LoginManager.GetTokenValidationParameters();
         
-        // Можно подключить аутентификацию с исп. параметров адр. строки
+        // Можно подключить аутентификацию с исп. параметров строки запроса URL
         // (nuget: Invio.Extensions.Authentication.JwtBearer)
         // options.AddQueryStringAuthentication();  
         
@@ -82,7 +82,7 @@ app.UseRouting();
 // Механизм добавления JWT-токена в заголовок HTTP-запроса
 {
     // JWT-токен из куков
-    // (при СБРОШЕННОМ признаке того, что JWT-токен передается через параметры запроса (query))
+    // (при СБРОШЕННОМ признаке того, что JWT-токен передается посредством строки запроса URL)
     app.UseWhen(context =>
         {
             var path = context.Request.Path;
@@ -98,7 +98,7 @@ app.UseRouting();
     );
 
     // JWT-токен из параметров запроса
-    // (при УСТАНОВЛЕННОМ признаке того, что JWT-токен передается через параметры запроса (query))
+    // (при УСТАНОВЛЕННОМ признаке того, что JWT-токен передается посредством строки запроса URL)
     app.UseWhen(
         context => context.Request.Path.StartsWithSegments("/Admin") &&
                            LoginManager.GetJwtInQueryFlag(context),

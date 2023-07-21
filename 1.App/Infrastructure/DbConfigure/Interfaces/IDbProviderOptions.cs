@@ -1,5 +1,4 @@
-﻿using App.Infrastructure.DbManagement;
-using Infrastructure.BaseComponents.Components;
+﻿using Infrastructure.BaseComponents.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 

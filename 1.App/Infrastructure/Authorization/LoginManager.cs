@@ -24,7 +24,7 @@ public static class LoginManager
     
     /// <summary>
     /// Название куки, куда мы сохраняем признак того,
-    /// что JWT-токен передается через параметры в адресной строке.
+    /// что JWT-токен передается посредством строки запроса URL.
     /// </summary>
     public const string IS_JWT_IN_QUERY_COOKIE_NAME = "IsJwtInQuery";
 
@@ -77,11 +77,11 @@ public static class LoginManager
         return tvp;
     }
 
-    #region [----- Работа с признаком того, что аутенификация по параметрам в адресной строке -----]
+    #region [----- Работа с признаком того, что аутенификация посредством строки запроса URL -----]
 
     /// <summary>
     /// Получить из кук признак того,
-    /// что JWT-токен передается через параметры запроса (query).
+    /// что JWT-токен передается посредством строки запроса URL.
     /// </summary>
     /// <param name="context">Http-контекст.</param>
     public static bool GetJwtInQueryFlag(HttpContext context)
@@ -92,7 +92,7 @@ public static class LoginManager
 
     /// <summary>
     /// Установить в куках (или сбросить) признак того,
-    /// что JWT-токен передается через параметры запроса (query).
+    /// что JWT-токен передается посредством строки запроса URL.
     /// </summary>
     /// <param name="value">Значение признака.</param>
     /// <param name="context">Http-контекст.</param>

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace App.Infrastructure.DbManagement;
+namespace App.Infrastructure.DbConfigure;
 
 /// <summary>
 /// Провайдеры СУБД.

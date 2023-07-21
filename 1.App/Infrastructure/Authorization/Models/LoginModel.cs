@@ -46,10 +46,10 @@ public class LoginModel
         return realPerson is not null && realPerson.Password!.Equals(person?.Password);
     }
     
-    #region [----- Работа с признаком того, что аутенификация по параметрам в адресной строке -----]
+    #region [----- Работа с признаком того, что аутенификация посредством строки запроса URL -----]
 
     /// <summary>
-    /// Признак того, что JWT-токен передается через параметры запроса (query).
+    /// Признак того, что JWT-токен передается посредством строки запроса URL.
     /// </summary>
     private bool? _jwtInQueryFlag;
     
@@ -96,7 +96,7 @@ public class LoginModel
     /// Признак того, что JWT-токен валиден.
     /// </summary>
     /// <remarks>
-    /// Если признак того, что JWT-токен передается через параметры запроса (query) УСТАНОВЛЕН,
+    /// Если признак того, что JWT-токен передается посредством строки запроса URL УСТАНОВЛЕН,
     /// проверяем <paramref name="jwtStr"/>, иначе - токен, записанный в заголовке HTTP-запроса.
     /// </remarks>
     public bool IsValidJwtStr(HttpContext context, string jwtStr)

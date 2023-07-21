@@ -99,9 +99,6 @@ public static class Initializer
     /// <returns>True или false (в случае неудачи), обернутое в <see cref="Result{T}"/>.</returns>
     public static Result<bool> Init(IServiceProvider serviceProvider)
     {
-        // var loginModel = serviceProvider.GetRequiredService<LoginModel>();
-        // var isJwtInQueryFlag
-        
         // Инициализация БД
         var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
         var result = InitDatabase(dbContext);

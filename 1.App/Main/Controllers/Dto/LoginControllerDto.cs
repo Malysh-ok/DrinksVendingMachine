@@ -14,7 +14,7 @@ public class LoginControllerDto
     public Personality? User { get; set; }
 
     /// <summary>
-    /// Признак того, что JWT-токен передается через параметры запроса (query).
+    /// Признак того, что JWT-токен передается посредством строки запроса URL.
     /// </summary>
     public bool IsJwtInAddressBarParams { get; set; }
 
@@ -32,7 +32,7 @@ public class LoginControllerDto
     /// </summary>
     /// <param name="user">Пользователь.</param>
     /// <param name="isJwtInAddressBarParams">Признак того,
-    /// что JWT-токен передается через параметры запроса (query).</param>
+    /// что JWT-токен передается посредством строки запроса URL.</param>
     public LoginControllerDto(Personality? user, bool isJwtInAddressBarParams)
     {
         User = user;
