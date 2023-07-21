@@ -31,7 +31,7 @@
 
             <div class="col-form-label-lg me-3 mt-4 w-auto text-start">Введите монеты:</div>
             <div id="Coins" class="d-flex justify-content-between">
-                @Html.Partial("_Coins", Model.EmptyPurchase)
+                @await Html.PartialAsync("_Coins", Model.EmptyPurchase)
             </div>
             
             <div class="d-flex mt-3 justify-content-end">
@@ -47,7 +47,7 @@
             <div class="col-form-label-lg me-2 py-0 align-self-center">Информация:</div>
             <div id="Info"
                  class="flex-grow-1 pt-1 align-self-center">
-                @Html.Partial("_Info", new InfoModel())
+                @await Html.PartialAsync("_Info", new InfoModel())
             </div>
         </div>
 
