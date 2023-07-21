@@ -57,7 +57,7 @@ public class LoginController : Controller
     /// </summary>
     [HttpPost]
     [Route("Login")]
-    // [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     public IActionResult Index(LoginControllerDto loginControllerDto)
     {
         // Извлекаем данные из loginControllerDto в person и isJwtInAddressBarParams
@@ -89,7 +89,7 @@ public class LoginController : Controller
                             ? new {access_token = _mainModel.GetJwtStr()}
                             : null
                     );
-                return Redirect(referer!);
+                return RedirectToAction("Index", "Buyer");
             }
         }
         

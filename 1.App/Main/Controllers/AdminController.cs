@@ -51,7 +51,6 @@ public class AdminController : Controller
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult Index()
     {
-        var isValid = LoginManager.IsValidJwtStr(_loginModel.GetJwtStr());
         // Если JWT-токен передается через параметры запроса (query) -
         // пробрасываем токен модели
         ViewData["JwtStr"] = _loginModel.GetJwtInQueryFlag(HttpContext)
@@ -65,7 +64,7 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Применить" (для Напитка).
     /// </summary>
     [HttpPost]
-    // [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult ApplyDrink([FromBody] [Bind("Id, Count, Price")] Drink drink)
     {
@@ -121,7 +120,7 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Добавить" (для Напитка).
     /// </summary>
     [HttpPost]
-    // [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult AddDrink([FromBody] [Bind("Name, Count, Price")] Drink drink)
     {
@@ -190,7 +189,7 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Удалить" (для Напитка).
     /// </summary>
     [HttpPost]
-    // [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult RemoveDrink([FromBody] [Bind("Name")] Drink drink)
     {
@@ -246,7 +245,7 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Применить" (для Монет).
     /// </summary>
     [HttpPost]
-    // [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult ApplyCoin([FromBody] [Bind("Id, Count, IsLocked")] Coin coin)
     {
@@ -302,7 +301,7 @@ public class AdminController : Controller
     /// Обработка нажатия кнопки "Отмена".
     /// </summary>
     [HttpPost]
-    // [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public IActionResult Escape()
     {

@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-// builder.Services.AddMvc();
 
 // Получаем Кофигуратор БД
 var dbConfigurator = new DbConfigurator(
@@ -80,26 +79,29 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
-{
 // Механизм добавления JWT-токена в заголовок HTTP-запроса
-
-    // Список путей, при совпадении с которыми текущего пути,
-    // JWT-токен в заголовок не записывается.
-    // Данный список содержит единственный элемент "",
-    // если JWT-токен передается через параметры запроса (query). 
-    var skipPaths = new List<PathString>();
-    app.Use(async (context, next) =>
-    {
-        if (LoginManager.GetJwtInQueryFlag(context))
-            skipPaths = new List<PathString> { new("/Admin") };
-        await next.Invoke();
-    });
-    
+{
     // JWT-токен из куков
-    app.UseMiddleware<CookieToHeaderMiddleware>(skipPaths);
-    
-    // JWT-токен из параметров запроса (при установленном признаке)
-    app.UseWhen(LoginManager.GetJwtInQueryFlag,
+    // (при СБРОШЕННОМ признаке того, что JWT-токен передается через параметры запроса (query))
+    app.UseWhen(context =>
+        {
+            var path = context.Request.Path;
+            if (!path.StartsWithSegments("/Admin"))
+                return false;
+
+            // Middleware будет выполняться если метод POST,
+            // если другой метод - только если сброшен признак
+            return context.Request.Method.ToUpper() == "POST" ||
+                   !LoginManager.GetJwtInQueryFlag(context);
+        },
+        appBuilder => appBuilder.UseMiddleware<CookieToHeaderMiddleware>()
+    );
+
+    // JWT-токен из параметров запроса
+    // (при УСТАНОВЛЕННОМ признаке того, что JWT-токен передается через параметры запроса (query))
+    app.UseWhen(
+        context => context.Request.Path.StartsWithSegments("/Admin") &&
+                           LoginManager.GetJwtInQueryFlag(context),
         appBuilder => appBuilder.UseMiddleware<QueryStringToHeaderMiddleware>()
     );
 }

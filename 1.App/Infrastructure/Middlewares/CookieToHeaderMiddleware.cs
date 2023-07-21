@@ -13,23 +13,20 @@ public class CookieToHeaderMiddleware
     private readonly RequestDelegate _next;
 
     /// <summary>
-    /// Список путей; если текущий путь HTTP-контекста
-    /// совпадает с любым элементом этого списка, то JWT-токен в заголовок не записывается.
+    /// Признак того, что если заголовок существует, то его необходимо перезаписать.
     /// </summary>
-    private readonly IList<PathString> _skipPaths;
+    private readonly bool _isRewriteHeader;
 
     /// <summary>
     /// Конструктор.
     /// </summary>
     /// <param name="next">Ссылка на делегат следующего запроса в конвейере.</param>
-    /// <param name="skipPaths">Список путей; если текущий путь HTTP-контекста
-    /// совпадает с любым элементом этого списка, то JWT-токен в заголовок не записывается.
-    /// </param>
-    public CookieToHeaderMiddleware(
-        RequestDelegate next, IList<PathString> skipPaths)
+    /// <param name="isRewriteHeader">Признак того, что если заголовок существует,
+    /// то его необходимо перезаписать.</param>
+    public CookieToHeaderMiddleware(RequestDelegate next, bool isRewriteHeader = false)
     {
         _next = next;
-        _skipPaths = skipPaths;
+        _isRewriteHeader = isRewriteHeader;
     }
 
     /// <summary>
@@ -37,12 +34,6 @@ public class CookieToHeaderMiddleware
     /// </summary>
     public async Task InvokeAsync(HttpContext context)
     {
-        if (_skipPaths.Contains(context.Request.Path))
-        {
-            await _next.Invoke(context);
-            return;
-        }
-        
         // Получаем JWT-токен
         var jwtStr = LoginManager.GetJwtStr(context);
         

@@ -119,12 +119,12 @@ public static class LoginManager
     /// <param name="isRewriteHeader">Признак того, что если заголовок существует,
     /// то его необходимо перезаписать.</param>
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public static void AddJwtToHeader(HttpContext context, string? jwtStr, bool isRewriteHeader = true)
+    public static void AddJwtToHeader(HttpContext context, string? jwtStr, bool isRewriteHeader = false)
     {
         const string HEADER_NAME = "Authorization";
 
         if (// Если токен пуст,
-            string.IsNullOrEmpty(jwtStr) ||
+            jwtStr.IsNull() ||
             // или заголовок присутствует, но флаг сброшен
             (context.Request.Headers[HEADER_NAME].Count > 0 && !isRewriteHeader))
         {

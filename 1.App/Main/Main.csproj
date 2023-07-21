@@ -11,7 +11,7 @@
       <Content Include="..\..\ReadMe.txt">
         <Link>ReadMe.txt</Link>
       </Content>
-      <Content Include="..\Testovoe-zadanie-Veb.docx">
+      <Content Include="..\..\Testovoe-zadanie-Veb.docx">
         <Link>Testovoe-zadanie-Veb.docx</Link>
       </Content>
     </ItemGroup>
