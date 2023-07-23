@@ -6,6 +6,7 @@ using System.Drawing.Text;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using Infrastructure.BaseExtensions.Collections;
 using Infrastructure.Phrases;
 
 namespace Infrastructure.BaseExtensions
@@ -530,6 +531,21 @@ namespace Infrastructure.BaseExtensions
         }
 
         /// <summary>
+        /// Получение массива байт из строки.
+        /// </summary>
+        /// <param name="str">Исходная строка.</param>
+        /// <param name="encoding">Кодировка исходной строки.</param>
+        public static byte[] ToByteArray(this string str, Encoding encoding = null)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            encoding ??= Encoding.UTF8;
+            
+            return encoding.GetBytes(str);
+        }
+        
+        /// <summary>
         /// Разделяет строку на пару "ключ - значение", используя разделитель delimiter (по умолчанию - ":").
         /// </summary>
         public static KeyValuePair<string, string> ToPairedValue(this string str, char delimiter = ':')
@@ -546,6 +562,26 @@ namespace Infrastructure.BaseExtensions
                 : new KeyValuePair<string, string>(null, null);
         }
 
+        /// <summary>
+        /// Получение массива ushort из строки.
+        /// </summary>
+        /// <param name="str">Исходная строка.</param>
+        [SuppressMessage("ReSharper", "IdentifierTypo")]
+        public static ushort[] ToUshortArray(this string str)
+        {
+            if (str == null)
+                throw new ArgumentNullException(nameof(str));
+
+            var bytes = str.ToByteArray().AddEmptyToEven();
+            var uhorts = new List<ushort>();
+            for (var i = 0; i < bytes.Count; i += 2)
+            {
+                uhorts.Add((ushort)((bytes[i + 1] << 8) | bytes[i]));
+            }
+
+            return uhorts.ToArray();
+        }
+        
         /// <summary>
         /// Если длина строки больше <paramref name="maxLength"/> символов, метод
         /// возвращает только первые <paramref name="maxLength"/> символов строки, иначе - исходную строку.

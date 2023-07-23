@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Infrastructure.BaseExtensions.Collections;
 using Infrastructure.Phrases;
 
 namespace Infrastructure.BaseExtensions
@@ -156,21 +155,6 @@ namespace Infrastructure.BaseExtensions
         }
 
         /// <summary>
-        /// Получение массива байт из строки.
-        /// </summary>
-        /// <param name="str">Исходная строка.</param>
-        /// <param name="encoding">Кодировка исходной строки.</param>
-        public static byte[] ToByteArray(this string str, Encoding encoding = null)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-
-            encoding ??= Encoding.UTF8;
-            
-            return encoding.GetBytes(str);
-        }
-
-        /// <summary>
         /// Получение строки из из массива байтов.
         /// </summary>
         /// <param name="array">Исходный массив.</param>
@@ -219,26 +203,6 @@ namespace Infrastructure.BaseExtensions
             }
 
             return bytes.ToArray().ToStr(encoding);
-        }
-        
-        /// <summary>
-        /// Получение массива ushort из строки.
-        /// </summary>
-        /// <param name="str">Исходная строка.</param>
-        [SuppressMessage("ReSharper", "IdentifierTypo")]
-        public static ushort[] ToUshortArray(this string str)
-        {
-            if (str == null)
-                throw new ArgumentNullException(nameof(str));
-
-            var bytes = str.ToByteArray().AddEmptyToEven();
-            var uhorts = new List<ushort>();
-            for (var i = 0; i < bytes.Count; i += 2)
-            {
-                uhorts.Add((ushort)((bytes[i + 1] << 8) | bytes[i]));
-            }
-
-            return uhorts.ToArray();
         }
         
         /// <summary>
