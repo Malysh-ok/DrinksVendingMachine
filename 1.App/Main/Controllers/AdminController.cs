@@ -1,5 +1,4 @@
-﻿using App.Infrastructure.Authorization;
-using App.Infrastructure.Authorization.Models;
+﻿using App.Infrastructure.Authorization.Models;
 using App.Main.Controllers.Dto;
 using Domain.Entities;
 using Domain.Models;
@@ -242,6 +241,93 @@ public class AdminController : Controller
     }
 
     /// <summary>
+    /// Обработка нажатия кнопки "Экспорт" (для Напитка).
+    /// </summary>
+    [HttpGet]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public IActionResult ExportDrinks()
+    {
+        // Получаем данные из главной Модели
+        var tuple = _mainModel.ExportDrinks();
+        return File(tuple.bytes, "application/octet-stream", tuple.filename);
+    }
+    
+    /// <inheritdoc cref="ExportDrinks"/>
+    /// <remarks>
+    /// В post-запросе - только информацию возвращаем.
+    /// </remarks>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public IActionResult ExportDrinksPost()
+    {
+        var infoHtml = this.ConvertViewToString(
+            PartialView("_Info", 
+                new InfoModel("Напитки экспортированы.")), _viewEngine
+        );
+        
+        return Json(new AdminControllerToViewDto(
+            infoHtml: infoHtml
+        ));    
+    }
+    
+    /// <summary>
+    /// Обработка нажатия кнопки "Импорт" (для Напитка).
+    /// </summary>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult> ImportDrinks(IFormFile file)
+    {
+        // В контроллере - только валидация
+        string? infoHtml;
+
+        if (!ModelState.IsValid)
+        {
+            // Ошибка валидации модели
+            return BadRequest(this.GetModelStateErrors());
+        }
+        
+        // ---------------------------------
+        // Получаем данные из главной Модели
+        var result = await _mainModel.ImportDrinks(file);
+        
+        if (result.Excptn is FailedDrinksImportException)
+        {
+            // Импорт напитков не удался
+            infoHtml = await this.ConvertViewToStringAsync(
+                PartialView("_Info", 
+                    new InfoModel(result.Excptn.Message, true)), _viewEngine
+            );            
+            
+            return Json(new UserControllerToViewDto(
+                infoHtml: infoHtml
+            ));
+        }
+        
+        if (!result)
+        {
+            // Фатальная ошибка
+            return StatusCode(StatusCodes.Status500InternalServerError, 
+                result.Excptn.Flatten());
+        }
+
+        // Все ок!
+        infoHtml = await this.ConvertViewToStringAsync(
+            PartialView("_Info", 
+                new InfoModel("Напитки импортированы.")), _viewEngine
+        );
+        var drinksHtml = await this.ConvertViewToStringAsync(
+            PartialView("_Drinks", _mainModel.Drinks), _viewEngine
+        );
+        return Json(new AdminControllerToViewDto(
+            drinksHtml: drinksHtml,
+            infoHtml: infoHtml,
+            isClearDrinks: true
+        ));    
+    }
+    
+    /// <summary>
     /// Обработка нажатия кнопки "Применить" (для Монет).
     /// </summary>
     [HttpPost]
@@ -306,7 +392,7 @@ public class AdminController : Controller
     public IActionResult Escape()
     {
         var partialViewResult = PartialView("_Info", 
-            new InfoModel("Начнем сначала...", false));
+            new InfoModel("Начнем сначала..."));
         return Json(new AdminControllerToViewDto(
             isClearDrinks: true,
             isClearAdditionDrink: true,

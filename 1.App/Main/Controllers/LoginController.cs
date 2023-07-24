@@ -78,6 +78,7 @@ public class LoginController : Controller
                 _mainModel.UpdateAndSaveJwt(HttpContext);
                 
                 // Перенаправляем на прошлую страницу
+                // (в целях безопасности - либо на Admin, либо на Buyer)
                 var referer = TempData["Referer"]?.ToString() 
                               ?? Url.Action("Index","Buyer");
                 if (referer.IsContains("Admin"))

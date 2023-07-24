@@ -2,6 +2,8 @@
 using Domain.Entities;
 using Infrastructure.AppComponents.AppExceptions.AdminModelExceptions;
 using Infrastructure.BaseComponents.Components;
+using Infrastructure.BaseExtensions;
+using Newtonsoft.Json;
 
 namespace Domain.Models;
 
@@ -113,6 +115,44 @@ public class AdminModel
         catch (Exception ex)
         {
             return Result<bool>.Fail(new AdminModelDataUpdateException(innerException: ex));        
+        }
+    }
+
+    /// <summary>
+    /// Экспорт напитков из модели.
+    /// </summary>
+    /// <returns>Кортеж, где filename - имя сохраняемого файла,
+    /// bytes - массив байтов - содержимое файла.</returns>
+    public (string filename, byte[] bytes) ExportDrinks()
+    {
+        const string filename = "Drinks.json";
+        var json = JsonConvert.SerializeObject(Drinks);
+
+        return (filename, json.ToByteArray());
+    }
+    
+    /// <summary>
+    /// Импорт напитков в модель.
+    /// </summary>
+    /// <param name="file">Файл, содержимым которого заменяется список напитков.</param>
+    /// <returns>Либо true (при успешной операции), либо Exception,
+    /// обернутое в <see cref="Result{T}"/>.</returns>
+    public async Task<Result<bool>> ImportDrinks(IFormFile file)
+    {
+        using var ms = new MemoryStream();
+        try
+        {
+            await file.CopyToAsync(ms);
+            var content = ms.ToArray().ToStr();
+            var drinks = JsonConvert.DeserializeObject<List<Drink>>(content);
+            _dbContext.Drinks.UpdateRange(drinks!);
+            await _dbContext.SaveChangesAsync();
+
+            return Result<bool>.Done(true);
+        }
+        catch (Exception ex)
+        {
+            return Result<bool>.Fail(new FailedDrinksImportException(innerException: ex));        
         }
     }
     

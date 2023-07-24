@@ -1,14 +1,14 @@
 ﻿namespace Infrastructure.AppComponents.AppExceptions.AdminModelExceptions;
 
 /// <summary>
-/// Исключение при обновлении данных Модели.
+/// Исключение при неудачном импорта напитков.
 /// </summary>
-public class AdminModelDataUpdateException : AdminModelException
+public class FailedDrinksImportException : AdminModelException
 {
     /// <summary>
     /// Конструктор.
     /// </summary>
-    public AdminModelDataUpdateException(string? message = "Ошибка обновления данных Модели.",
+    public FailedDrinksImportException(string? message = "Неудачный импорт напитков.",
         Exception? innerException = null) 
         : base(message, innerException)
     {

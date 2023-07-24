@@ -59,6 +59,31 @@ function getCoin() {
     return coin;
 }
 
+// Открываем диалог выбора файлов, получаем файл(ы).
+// Параметры: contentType - Mime-тип файла (фильтр диалога), 
+// multiple - флаг того, что выбираются несколько файлов.
+// Возвращает либо один файл, либо массив файлов.
+function selectFile (contentType, multiple){
+    return new Promise(resolve => {
+        // Используется специальный временно создаваемый элемент <input type='file'>,
+        // на котором имитируется нажатие
+        let input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = multiple;
+        input.accept = contentType;
+
+        input.onchange = _ => {
+            let files = Array.from(input.files);
+            if (multiple)
+                resolve(files);
+            else
+                resolve(files[0]);
+        };
+
+        input.click();
+    });
+}
+
 // Обрабатываем ответ сервера после нажатия кнопок в Представлении
 function handleAjaxResponse(response){
     
@@ -202,6 +227,62 @@ $(document).ready(function () {
             type: 'POST',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(getAddedDrink()),
+
+            beforeSend: function (request) {
+                request.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
+            },
+
+            success: function (response) {
+                handleAjaxResponse(response)
+            },
+
+            error: function (response) {
+                console.log("!!!!! ERROR !!!!!\n", response);
+                handleErrorAjaxResponse(response);
+            }
+        })
+    })
+
+    // Кнопка "Экспорт" (для Напитка)
+    $("#ExportDrinksBtn").click(function () {
+        // Запрос контроллеру
+        $.ajax({
+            url: 'Admin/ExportDrinksPost',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+
+            beforeSend: function (request) {
+                request.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
+            },
+
+            success: function (response) {
+                handleAjaxResponse(response)
+                window.location.href = 'Admin/ExportDrinks';
+            },
+
+            error: function (response) {
+                console.log("!!!!! ERROR !!!!!\n", response);
+                handleErrorAjaxResponse(response);
+            }
+        })
+    })
+
+    // Кнопка "Импорт" (для Напитка)
+    $("#ImportDrinksBtn").click(async function () {
+        // Получаем файл из диалога
+        let file = await selectFile("application/json", false);
+        
+        // Создаем объект для передачи данных и помещаем туда файл
+        let formData = new FormData();
+        formData.append("file", file);
+
+        // Запрос контроллеру
+        $.ajax({
+            url: 'Admin/ImportDrinks',
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
 
             beforeSend: function (request) {
                 request.setRequestHeader("RequestVerificationToken", $("[name='__RequestVerificationToken']").val());
